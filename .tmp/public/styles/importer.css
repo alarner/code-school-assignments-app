@@ -13,7 +13,19 @@
  * always omit, customize, or replace this behavior with SASS, SCSS,
  * or any other Grunt tasks you like.)
  */
-.test {
-  color: blue; }
+body {
+  font-family: 'open sans', arial, sans-serif; }
+
+nav {
+  background-color: #6091BA; }
+  nav a {
+    height: 3.125em;
+    line-height: 3.125em;
+    text-transform: uppercase;
+    color: #dce7f0;
+    text-decoration: none;
+    padding: 0 1em;
+    font-weight: 100;
+    font-size: 13px; }
 
 /*# sourceMappingURL=importer.css.map */

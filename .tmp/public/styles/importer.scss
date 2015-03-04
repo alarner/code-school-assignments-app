@@ -29,6 +29,7 @@
 //
 // etc.
 
-.test {
-	color: blue;
-}
+@import 'global';
+@import 'nav';
+
+
