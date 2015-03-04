@@ -2,10 +2,11 @@ angular.module('app.controllers', ['app.services'])
 .controller('HomeCtrl', function($scope) {
 	
 })
-.controller('RegisterCtrl', function($scope, Validate) {
+.controller('RegisterCtrl', function($scope, $http, $state, Validate) {
 	$scope.error = {
 		identifier: '',
-		password: ''
+		password: '',
+		generic: []
 	};
 	$scope.credentials = {
 		identifier: '',
@@ -21,25 +22,60 @@ angular.module('app.controllers', ['app.services'])
 				email: credentials.identifier,
 				password: credentials.password
 			};
-			console.log(registerObj);
+			$http.post('/auth/local/register', registerObj)
+			.success(function(res) {
+				console.log('Success!');
+				console.log(res);
+
+				if(res.success) {
+					$state.go('home');
+				}
+				else {
+					$scope.error.generic = res.errors;
+				}
+				console.log($scope.error);
+			})
+			.error(function(err) {
+				console.log('Error!');
+				console.log(err);
+			});
 		}
 	};
 })
-.controller('LoginCtrl', function($scope, Validate) {
+.controller('LoginCtrl', function($scope, $http, $state, Validate) {
 	$scope.error = {
 		identifier: '',
-		password: ''
+		password: '',
+		generic: []
 	};
 	$scope.credentials = {
-		identifier: '',
+		identifier: 'anlarner@gmail.com',
 		password: ''
 	};
 
-	$scope.login = function(credentials) {
-		$scope.error = Validate.credentials(credentials);
+	console.log($scope.credentials);
+
+	$scope.login = function(htmlCredentials) {
+		$scope.error = Validate.credentials(htmlCredentials);
 
 		if(!Validate.hasError($scope.error)) {
-			console.log(credentials);
+			$http.post('/auth/local', htmlCredentials)
+			.success(function(res) {
+				console.log('Success!');
+				console.log(res);
+
+				if(res.success) {
+					$state.go('home');
+				}
+				else {
+					$scope.error.generic = res.errors;
+				}
+				console.log($scope.error);
+			})
+			.error(function(err) {
+				console.log('Error!');
+				console.log(err);
+			});
 		}
 	};
 });
