@@ -107,6 +107,7 @@ angular.module('app.controllers', ['app.services'])
 				url: assignment.url,
 				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
 			};
+			console.log(data);
 		}
 	};
 });
