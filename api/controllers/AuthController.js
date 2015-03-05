@@ -11,10 +11,10 @@ var AuthController = {
    *
    * The login form itself is just a simple HTML form:
    *
-      <form role="form" action="/auth/local" method="post">
-        <input type="text" name="identifier" placeholder="Username or Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Sign in</button>
+      <form role='form' action='/auth/local' method='post'>
+        <input type='text' name='identifier' placeholder='Username or Email'>
+        <input type='password' name='password' placeholder='Password'>
+        <button type='submit'>Sign in</button>
       </form>
    *
    * You could optionally add CSRF-protection as outlined in the documentation:
@@ -24,7 +24,7 @@ var AuthController = {
    * Handlebars template would look like this:
    *
       {{#each providers}}
-        <a href="/auth/{{slug}}" role="button">{{name}}</a>
+        <a href='/auth/{{slug}}' role='button'>{{name}}</a>
       {{/each}}
    *
    * @param {Object} req
@@ -82,11 +82,11 @@ var AuthController = {
    *
    * Just like the login form, the registration form is just simple HTML:
    *
-      <form role="form" action="/auth/local/register" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="text" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Sign up</button>
+      <form role='form' action='/auth/local/register' method='post'>
+        <input type='text' name='username' placeholder='Username'>
+        <input type='text' name='email' placeholder='Email'>
+        <input type='password' name='password' placeholder='Password'>
+        <button type='submit'>Sign up</button>
       </form>
    *
    * @param {Object} req
@@ -109,6 +109,22 @@ var AuthController = {
   },
 
   /**
+   * Returns the currently logged in user in JSON
+   *
+   * @param {Object} req
+   * @param {Object} res
+   */
+  user: function (req, res) {
+    if(req.user) {
+      res.jsonx(req.user);
+    }
+    else {
+      res.status(404);
+      res.jsonx({});
+    }
+  },
+
+  /**
    * Create a authentication callback endpoint
    *
    * This endpoint handles everything related to creating and verifying Pass-
@@ -125,22 +141,39 @@ var AuthController = {
    * @param {Object} res
    */
   callback: function (req, res) {
+    function getStatusCode(error) {
+      switch(error) {
+        case 'Error.Passport.Password.Invalid': return 400;
+        case 'Error.Passport.Password.Wrong': return 401;
+        case 'Error.Passport.Password.NotSet': return 400;
+        case 'Error.Passport.Username.NotFound': return 404;
+        case 'Error.Passport.User.Exists': return 400;
+        case 'Error.Passport.Email.NotFound': return 404;
+        case 'Error.Passport.Email.Missing': return 400;
+        case 'Error.Passport.Email.Exists': return 400;
+        case 'Error.Passport.Username.Missing': return 400;
+        case 'Error.Passport.Password.Missing': return 400;
+        case 'Error.Passport.Generic': return 500;
+      }
+    }
     function tryAgain (err) {
       // Only certain error messages are returned via req.flash('error', someError)
       // because we shouldn't expose internal authorization errors to the user.
       // We do return a generic error and the original request body.
       var flashError = req.flash('error')[0];
 
-      console.log(err);
-      console.log(flashError);
-      console.log(req.session);
+      var errorToReturn = null;
 
       if (err && !flashError ) {
-        req.flash('error', 'Error.Passport.Generic');
+        errorToReturn = 'Error.Passport.Generic';
       } else if (flashError) {
-        req.flash('error', flashError);
+        errorToReturn = flashError;
       }
-      req.flash('form', req.body);
+
+      if(!req.wantsJSON) {
+        req.flash('error', errorToReturn);
+        req.flash('form', req.body);
+      }
 
       // If an error was thrown, redirect the user to the
       // login, register or disconnect action initiator view.
@@ -150,7 +183,8 @@ var AuthController = {
       switch (action) {
         case 'register':
           if(req.wantsJSON) {
-            res.jsonx({success: false, errors: [flashError || 'Error.Passport.Generic']});
+            res.status(getStatusCode(errorToReturn));
+            res.jsonx({success: false, errors: [errorToReturn]});
           }
           else {
             res.redirect('/register');
@@ -161,7 +195,8 @@ var AuthController = {
           break;
         default:
           if(req.wantsJSON) {
-            res.jsonx({success: false, errors: [flashError || 'Error.Passport.Generic']});
+            res.status(getStatusCode(errorToReturn));
+            res.jsonx({success: false, errors: [errorToReturn]});
           }
           else {
             res.redirect('/login');
