@@ -79,7 +79,7 @@ angular.module('app.controllers', ['app.services'])
 		}
 	};
 })
-.controller('CreateAssignmentCtrl', function($scope, Validate) {
+.controller('CreateAssignmentCtrl', function($scope, $http, Validate) {
 	$scope.error = {
 		name: '',
 		url: '',
@@ -107,6 +107,15 @@ angular.module('app.controllers', ['app.services'])
 				url: assignment.url,
 				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
 			};
+			data.dueAt = 'asdjkasdh';
+
+			$http.post('/assignment', data)
+			.success(function(newAssignment) {
+				console.log(newAssignment);
+			})
+			.error(function(err) {
+				console.log(err);
+			});
 			console.log(data);
 		}
 	};
