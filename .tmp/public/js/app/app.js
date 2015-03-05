@@ -18,6 +18,11 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		url: '/dashboard',
 		templateUrl: 'templates/dashboard.html',
 		controller: 'DashboardCtrl'
+	})
+	.state('create-assignment', {
+		url: '/create-assignment',
+		templateUrl: 'templates/create-assignment.html',
+		controller: 'CreateAssignmentCtrl'
 	});
 
 	$urlRouterProvider.otherwise('/');

@@ -3094,4 +3094,46 @@ nav {
       -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
+.form h1 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e8e8e8;
+  font-family: 'open sans', arial, sans-serif;
+  font-weight: 300; }
+.form .label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: 700;
+  color: #333;
+  font-size: 0.8125em; }
+  .form .label.required:after {
+    content: '*';
+    color: red; }
+.form input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  border: 1px solid #ccc; }
+  .form input:focus {
+    border-color: #666; }
+.form label {
+  display: block;
+  margin-bottom: 1em; }
+
+.btn {
+  border: 0;
+  background: #6091ba;
+  padding: 6px 12px;
+  color: #fff; }
+  .btn:hover {
+    background: #84aac9; }
+
+.assignment {
+  margin: 4em auto;
+  max-width: 30em; }
+
 /*# sourceMappingURL=importer.css.map */

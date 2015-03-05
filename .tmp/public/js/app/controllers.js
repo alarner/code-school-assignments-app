@@ -85,6 +85,40 @@ angular.module('app.controllers', ['app.services'])
 		}
 	};
 })
+
 .controller('DashboardCtrl', function($scope) {
 
+})
+
+.controller('CreateAssignmentCtrl', function($scope, Validate) {
+	$scope.error = {
+		name: '',
+		url: '',
+		dueDate: '',
+		dueTime: '',
+		generic: []
+	};
+	$scope.assignment = {
+		name: '',
+		url: '',
+		dueDate: moment().add(1, 'day').toDate(),
+		dueTime: new Date(1970, 0, 1, 22, 0, 0)
+	};
+
+	$scope.create = function(assignment) {
+		$scope.error = Validate.assignment(assignment);
+
+		if(!Validate.hasError($scope.error)) {
+			var dueAt = moment(assignment.dueDate);
+			dueAt.hour(assignment.dueTime.getHours());
+			dueAt.minute(assignment.dueTime.getMinutes());
+			dueAt.second(assignment.dueTime.getSeconds());
+			var data = {
+				name: assignment.name,
+				url: assignment.url,
+				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
+			};
+			console.log(data);
+		}
+	};
 });
