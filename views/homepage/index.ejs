@@ -1,0 +1,12 @@
+<div ng-app="app">
+	<nav ng-controller="NavCtrl">
+		<section>
+			<a href="#" ui-sref-active="active" ng-hide="loggedIn" ui-sref="login"><span>Login</span></a>
+			<a href="#" ui-sref-active="active" ng-hide="loggedIn" ui-sref="register"><span>Register</span></a>
+			<a href="#" ui-sref-active="active" ng-show="loggedIn" ui-sref="dashboard"><span>Dashboard</span></a>
+			<a href="#" ng-show="loggedIn" ng-click="logout()"><span>Logout</span></a>
+		</section>
+	</nav>
+	<main ui-view></main>
+</div>
+<% block('localScripts', '<script type="text/javascript">angular.module(\'app.data\', []).value(\'userData\', '+JSON.stringify(user)+');</script>') %>
