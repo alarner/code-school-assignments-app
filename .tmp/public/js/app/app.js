@@ -39,6 +39,10 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 	'dashboard': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false
+	},
+	'create-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false
 	}
 })
 .run(function($rootScope, $state, userData, User, stateSettings) {
