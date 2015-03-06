@@ -11,6 +11,14 @@ module.exports = {
   	name: {
   		type: 'string',
   		required: true
+  	},
+  	url: {
+  		type: 'string',
+  		required: true
+  	},
+  	dueAt: {
+  		type: 'datetime',
+  		required: true
   	}
   }
 };

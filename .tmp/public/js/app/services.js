@@ -15,6 +15,9 @@ angular.module('app.services', [])
 			this.trigger('login', user);
 		},
 		get: function(prop) {
+			if(!prop) {
+				return user;
+			}
 			if(user.hasOwnProperty(prop)) {
 				return user[prop];
 			}
@@ -52,6 +55,44 @@ angular.module('app.services', [])
 
 			if(!credentials.password) {
 				error.password = 'Enter a password';
+			}
+
+			return error;
+		},
+
+		assignment: function(assignment) {
+			var error = {
+				name: '',
+				url: '',
+				dueDate: '',
+				dueTime: ''
+			};
+
+			// Name validations
+			if(!assignment.name) {
+				error.name = 'Enter the assignment name.';
+			}
+
+			// URL validations
+			if(!assignment.url) {
+				error.url = 'Enter the assignment URL.';
+			}
+			else if(!validator.isURL(assignment.url, {require_protocol: true})) {
+				error.url = 'Invalid url.';
+			}
+
+			// Date validations
+			if(!_.isDate(assignment.dueDate)) {
+				error.dueDate = 'Invalid due date.';
+			}
+			else {
+				var dueDate = moment(assignment.dueDate);
+				dueDate.hour(assignment.dueTime.getHours());
+				dueDate.minute(assignment.dueTime.getMinutes());
+				dueDate.second(assignment.dueTime.getSeconds());
+				if(!dueDate.isValid()) {
+					error.dueDate = 'Invalid due date or time.';
+				}
 			}
 
 			return error;

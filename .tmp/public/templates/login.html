@@ -2,7 +2,7 @@
 	<div class="avatar"></div>
 	<h1>Log in</h1>
 	<form class="form" ng-submit="login(credentials)">
-		<p class="error" ng-repeat="errorMessage in error.generic" ng-bind="errorMessage"></p>
+		<p class="error" ng-show="error.generic" ng-bind="error.generic"></p>
 		<label ng-class="error.identifier ? 'error' : ''">
 			<input type="text" placeholder="Email" ng-model="credentials.identifier">
 			<p class="error" ng-bind="error.identifier"></p>

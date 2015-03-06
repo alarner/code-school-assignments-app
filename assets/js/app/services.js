@@ -15,6 +15,9 @@ angular.module('app.services', [])
 			this.trigger('login', user);
 		},
 		get: function(prop) {
+			if(!prop) {
+				return user;
+			}
 			if(user.hasOwnProperty(prop)) {
 				return user[prop];
 			}
@@ -74,7 +77,7 @@ angular.module('app.services', [])
 			if(!assignment.url) {
 				error.url = 'Enter the assignment URL.';
 			}
-			else if(!validator.isURL(assignment.url)) {
+			else if(!validator.isURL(assignment.url, {require_protocol: true})) {
 				error.url = 'Invalid url.';
 			}
 

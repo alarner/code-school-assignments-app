@@ -169,6 +169,7 @@ var AuthController = {
       var errorToReturn = null;
 
       if (err && !flashError ) {
+        console.log(err);
         errorToReturn = 'Error.Passport.Generic';
       } else if (flashError) {
         errorToReturn = flashError;

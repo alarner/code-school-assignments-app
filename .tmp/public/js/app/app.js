@@ -20,9 +20,24 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		controller: 'DashboardCtrl'
 	})
 	.state('create-assignment', {
-		url: '/create-assignment',
+		url: '/instructor/assignment/create',
 		templateUrl: 'templates/create-assignment.html',
 		controller: 'CreateAssignmentCtrl'
+	})
+	.state('assignment', {
+		url: '/assignment/:id',
+		templateUrl: 'templates/assignment.html',
+		controller: 'AssignmentCtrl'
+	})
+	.state('submit', {
+		url: '/assignment/:id/submit',
+		templateUrl: 'templates/submit.html',
+		controller: 'SubmitCtrl'
+	})
+	.state('permission-denied', {
+		url: '/permission-denied',
+		templateUrl: 'templates/permission-denied.html',
+		controller: 'PermissionDeniedCtrl'
 	});
 
 	$urlRouterProvider.otherwise('/');
@@ -30,19 +45,33 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 .constant('stateSettings', {
 	'login': {
 		visibleLoggedIn: false,
-		visibleLoggedOut: true
+		visibleLoggedOut: true,
+		requiresType: []
 	},
 	'register': {
 		visibleLoggedIn: false,
-		visibleLoggedOut: true
+		visibleLoggedOut: true,
+		requiresType: []
 	},
 	'dashboard': {
 		visibleLoggedIn: true,
-		visibleLoggedOut: false
+		visibleLoggedOut: false,
+		requiresType: []
 	},
 	'create-assignment': {
 		visibleLoggedIn: true,
-		visibleLoggedOut: false
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: []
+	},
+	'permission-denied': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: true,
+		requiresType: []
 	}
 })
 .run(function($rootScope, $state, userData, User, stateSettings) {
@@ -52,11 +81,22 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		function(event, toState, toParams, fromState, fromParams){
 			var go = null;
 			if(User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedIn) {
+				console.log(1);
 				go = 'dashboard';
 			}
 			else if(!User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedOut) {
+				console.log(2);
 				go = 'login';
 			}
+			else if(stateSettings[toState.name].requiresType.length){
+				console.log(3);
+				if(stateSettings[toState.name].requiresType.indexOf(User.get('type')) < 0) {
+					go = 'permission-denied';
+				}
+			}
+
+			console.log(toState.name);
+			console.log(go);
 
 			if(go) {
 				event.preventDefault();

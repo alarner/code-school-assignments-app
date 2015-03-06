@@ -19,7 +19,12 @@
 
 module.exports.policies = {
 
-  '*': [ 'passport' ]
+  '*': [ 'passport' ],
+
+  AssignmentController: {
+    '*': [ 'passport', 'isLoggedIn' ],
+    create: ['passport', 'isInstructor']
+  }
 
   /***************************************************************************
   *                                                                          *

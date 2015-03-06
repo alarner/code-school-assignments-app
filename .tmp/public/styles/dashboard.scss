@@ -1,0 +1,68 @@
+.dashboard {
+	background: #f5f5f5;
+	margin-top: 2em;
+	padding: 2em;
+	max-width: 660px;
+
+	h1 {
+		font-size: 22px;
+		font-weight: 300;
+		line-height: 2;
+		margin-top: 0;
+		color: #2f506c;
+	}
+
+	.week {
+		margin-bottom: 3em;
+	}
+
+	.weekly-progress {
+		overflow: hidden;
+		button {
+			display: block;
+			float: left;
+			width: 4em;
+			height: 1em;
+			border-radius: 0;
+			background: #ccc;
+			border: 1px solid #ccc;
+			border: 0;
+			margin-right: 2px;
+
+			&:hover {
+				border: 1px solid #999;
+			}
+		}
+		margin-bottom: 2em;
+	}
+
+	.assignments {
+		.a {
+			overflow: hidden;
+			padding: 1em;
+			margin-left: 1em;
+			color: #333;
+			> div {
+				float: left;
+			}
+
+			> a {
+				display: block;
+				float: right;
+			}
+
+			.datetime {
+				margin-right: 1em;
+				min-width: 5.625em;
+			}
+
+			.time {
+				font-size: 12px;
+			}
+		}
+
+		.a:nth-child(odd) {
+			background: #ECECEC;
+		}
+	}
+}

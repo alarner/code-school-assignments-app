@@ -1,0 +1,8 @@
+<section class="assignment">
+	<p class="error" ng-show="error.generic" ng-bind="error.generic"></p>
+	<div ng-show="assignment">
+		<h1>{{ assignment.name }}</h1>
+		<div>Due on: {{ assignment.dueAt | date : 'fullDate' }}</div>
+		<div><a ng-href="{{ assignment.url }}">Link to instructions</a></div>
+	</div>
+</section>
