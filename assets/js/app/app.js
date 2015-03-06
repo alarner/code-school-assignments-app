@@ -20,7 +20,7 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		controller: 'DashboardCtrl'
 	})
 	.state('create-assignment', {
-		url: '/create-assignment',
+		url: 'instructor/assignment/create',
 		templateUrl: 'templates/create-assignment.html',
 		controller: 'CreateAssignmentCtrl'
 	});
