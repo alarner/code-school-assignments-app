@@ -1,3 +1,16 @@
-<section class="submit">
-	submit
+<section class="form submit">
+	<h1>{{ assignment.name }}</h1>
+	<form class="form" ng-submit="submit(submission)">
+		<label ng-class="error.url ? 'error' : ''">
+			<div class="label required">URL</div>
+			<input type="text" placeholder="Enter the submission URL" ng-model="submission.url">
+			<p class="error" ng-bind="error.url" ng-show="error.url"></p>
+		</label>
+		<label ng-class="error.notes ? 'error' : ''">
+			<div class="label required">Notes</div>
+			<textarea placeholder="Did you complete everything? If not, what is missing? What did you struggle with?" ng-model="submission.notes"></textarea>
+			<p class="error" ng-bind="error.notes" ng-show="error.notes"></p>
+		</label>
+		<button type="submit" class="btn">Submit</button>
+	</form>
 </section>

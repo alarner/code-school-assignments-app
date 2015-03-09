@@ -175,6 +175,6 @@ angular.module('app.controllers', ['app.services'])
 		$scope.error.generic = err.summary || err;
 	});
 })
-.controller('SubmitCtrl', function($scope) {
+.controller('SubmitCtrl', function($scope, $stateParams) {
 
 });

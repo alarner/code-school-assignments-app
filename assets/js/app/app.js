@@ -72,6 +72,11 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		visibleLoggedIn: true,
 		visibleLoggedOut: true,
 		requiresType: []
+	},
+	'submit': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [1]
 	}
 })
 .run(function($rootScope, $state, userData, User, stateSettings) {
@@ -94,9 +99,6 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 					go = 'permission-denied';
 				}
 			}
-
-			console.log(toState.name);
-			console.log(go);
 
 			if(go) {
 				event.preventDefault();
