@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['app.services'])
+angular.module('app.controllers', ['app.services', 'ui.router'])
 .controller('NavCtrl', function($scope, $state, User) {
 	$scope.loggedIn = User.isLoggedIn();
 	if($scope.loggedIn) {
@@ -175,6 +175,6 @@ angular.module('app.controllers', ['app.services'])
 		$scope.error.generic = err.summary || err;
 	});
 })
-.controller('SubmitCtrl', function($scope) {
+.controller('SubmitCtrl', function($scope, $stateParams) {
 
 });

@@ -74,7 +74,7 @@ this["JST"]["assets/templates/submit.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<section class="submit">\n\tsubmit\n</section>';
+__p += '<section class="form submit">\n\t<h1>{{ assignment.name }}</h1>\n\t<form class="form" ng-submit="submit(submission)">\n\t\t<label ng-class="error.url ? \'error\' : \'\'">\n\t\t\t<div class="label required">URL</div>\n\t\t\t<input type="text" placeholder="Enter the submission URL" ng-model="submission.url">\n\t\t\t<p class="error" ng-bind="error.url" ng-show="error.url"></p>\n\t\t</label>\n\t\t<label ng-class="error.notes ? \'error\' : \'\'">\n\t\t\t<div class="label required">Notes</div>\n\t\t\t<textarea placeholder="Did you complete everything? If not, what is missing? What did you struggle with?" ng-model="submission.notes"></textarea>\n\t\t\t<p class="error" ng-bind="error.notes" ng-show="error.notes"></p>\n\t\t</label>\n\t\t<button type="submit" class="btn">Submit</button>\n\t</form>\n</section>';
 
 }
 return __p

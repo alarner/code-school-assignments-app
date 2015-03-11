@@ -43,5 +43,11 @@
     "url": "git://github.com/alarner/sails-template.git"
   },
   "author": "alarner",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon-chai": "^0.3.0",
+    "mocha": "^2.2.1"
+  }
 }

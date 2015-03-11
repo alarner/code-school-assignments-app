@@ -3109,7 +3109,7 @@ nav {
   .form .label.required:after {
     content: '*';
     color: red; }
-.form input {
+.form input, .form textarea {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -3118,7 +3118,7 @@ nav {
   line-height: 1.42857143;
   color: #555;
   border: 1px solid #ccc; }
-  .form input:focus {
+  .form input:focus, .form textarea:focus {
     border-color: #666; }
 .form label {
   display: block;

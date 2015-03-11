@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['app.services'])
+angular.module('app.controllers', ['app.services', 'ui.router'])
 .controller('NavCtrl', function($scope, $state, User) {
 	$scope.loggedIn = User.isLoggedIn();
 	if($scope.loggedIn) {
