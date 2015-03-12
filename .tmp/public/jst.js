@@ -34,7 +34,7 @@ this["JST"]["assets/templates/edit-assignment.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<section class="form assignment">\n\t<h1 ng-bind="assignment.name"></h1>\n\t<form class="form" ng-submit="edit(assignment)">\n\t\t<div ng-include="\'templates/partials/assignment-form.html\'"></div>\n\t\t<button type="submit" class="btn">Save Assignment</button>\n\t</form>\n</section>';
+__p += '<section class="form assignment">\n\t<h1 ng-bind="assignment.name"></h1>\n\t<form class="form" ng-submit="edit(assignment)">\n\t\t<div ng-include="\'templates/partials/assignment-form.html\'"></div>\n\t\t<button type="submit" class="btn">Save Assignment</button>\n\t\t<button type="button" class="btn" ng-click="verifyDelete()">Delete</button>\n\t</form>\n</section>';
 
 }
 return __p
@@ -65,6 +65,16 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<label ng-class="error.name ? \'error\' : \'\'">\n\t<div class="label required">Name</div>\n\t<input type="text" placeholder="Enter the assignment name" ng-model="assignment.name">\n\t<p class="error" ng-bind="error.name" ng-show="error.name"></p>\n</label>\n<label ng-class="error.url ? \'error\' : \'\'">\n\t<div class="label required">URL</div>\n\t<input type="text" placeholder="Enter the assignment URL" ng-model="assignment.url">\n\t<p class="error" ng-bind="error.url" ng-show="error.url"></p>\n</label>\n<label ng-class="error.dueDate ? \'error\' : \'\'">\n\t<div class="label required">Due Date</div>\n\t<input type="date" ng-model="assignment.dueDate">\n\t<p class="error" ng-bind="error.dueDate" ng-show="error.dueDate"></p>\n</label>\n<label ng-class="error.dueTime ? \'error\' : \'\'">\n\t<div class="label required">Time</div>\n\t<input type="time" ng-model="assignment.dueTime" step="60">\n\t<p class="error" ng-bind="error.dueTime" ng-show="error.dueTime"></p>\n</label>';
+
+}
+return __p
+};
+
+this["JST"]["assets/templates/partials/verify-delete-assignment.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="dialog-contents">\n    <p>Are you sure you want to permanently delete this assignment?</p>\n    <button type="button" class="btn" ng-click="closeThisDialog(\'cancel\')">Cancel</button>\n    <button type="button" class="btn" ng-click="closeThisDialog(\'delete\')">Delete</button>\n</div>';
 
 }
 return __p

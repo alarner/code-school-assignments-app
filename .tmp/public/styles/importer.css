@@ -26,6 +26,9 @@
   used under CC BY http://creativecommons.org/licenses/by/4.0/
   Modified icons to fit ionicon’s grid from original.
 */
+@import url(../bower_components/ngDialog/css/ngDialog.css);
+@import url(../bower_components/ngDialog/css/ngDialog-theme-default.css);
+@import url(../bower_components/ngDialog/css/ngDialog-theme-plain.css);
 @font-face {
   font-family: "Ionicons";
   src: url("../fonts/ionicons.eot?v=2.0.0");

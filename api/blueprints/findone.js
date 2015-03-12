@@ -19,7 +19,6 @@ var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUt
  */
 
 module.exports = function findOneRecord (req, res) {
-  console.log('findOne');
   var Model = actionUtil.parseModel(req);
   var pk = actionUtil.requirePk(req);
 

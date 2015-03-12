@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['app.services', 'ui.router'])
+angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 .controller('NavCtrl', function($scope, $state, User) {
 	$scope.loggedIn = User.isLoggedIn();
 	if($scope.loggedIn) {
@@ -157,7 +157,7 @@ angular.module('app.controllers', ['app.services', 'ui.router'])
 		}
 	};
 })
-.controller('EditAssignmentCtrl', function($scope, $http, $state, $stateParams, Validate) {
+.controller('EditAssignmentCtrl', function($scope, $http, $state, $stateParams, Validate, ngDialog) {
 	$scope.error = {
 		name: '',
 		url: '',
@@ -201,6 +201,23 @@ angular.module('app.controllers', ['app.services', 'ui.router'])
 				$scope.error.generic = err.summary;
 			});
 		}
+	};
+
+	$scope.verifyDelete = function() {
+		ngDialog.open({ template: 'templates/partials/verify-delete-assignment.html' })
+		.closePromise.then(function (data) {
+			if(data.value === 'delete') {
+				$http.put('/assignment/'+$stateParams.id, {deletedAt: new Date()})
+				.success(function(newAssignment) {
+					$state.go('dashboard');
+				})
+				.error(function(err) {
+					console.log(err);
+				});
+			}
+			console.log(data);
+			console.log(data.id + ' has been dismissed.');
+		});
 	};
 })
 .controller('AssignmentCtrl', function($scope, $stateParams, $http) {
