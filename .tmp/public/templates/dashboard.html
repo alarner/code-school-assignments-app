@@ -11,7 +11,8 @@
 					<div class="time">{{ assignment.dueAt | date : 'h:mm a'}}</div>
 				</div>
 				<div ng-bind="assignment.name"></div>
-				<a ui-sref="submit({id: assignment.id})" class="btn">Submit</a>
+				<a ui-sref="submit({id: assignment.id})" class="btn" ng-show="user.isStudent()">Submit</a>
+				<a ui-sref="edit-assignment({id: assignment.id})" class="btn" ng-show="user.isInstructor()">Edit</a>
 			</div>
 		</div>
 	</div>

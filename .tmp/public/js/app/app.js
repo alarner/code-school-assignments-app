@@ -24,6 +24,11 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		templateUrl: 'templates/create-assignment.html',
 		controller: 'CreateAssignmentCtrl'
 	})
+	.state('edit-assignment', {
+		url: '/instructor/assignment/edit/:id',
+		templateUrl: 'templates/edit-assignment.html',
+		controller: 'EditAssignmentCtrl'
+	})
 	.state('assignment', {
 		url: '/assignment/:id',
 		templateUrl: 'templates/assignment.html',
@@ -59,6 +64,11 @@ angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
 		requiresType: []
 	},
 	'create-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'edit-assignment': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
 		requiresType: [2]

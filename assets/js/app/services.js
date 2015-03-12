@@ -7,6 +7,10 @@ angular.module('app.services', [])
 	};
 
 	return {
+		type: {
+			STUDENT: 1,
+			INSTRUCTOR: 2
+		},
 		isLoggedIn: function() {
 			return user.hasOwnProperty('id');
 		},
@@ -27,6 +31,12 @@ angular.module('app.services', [])
 			user = {};
 			this.trigger('logout');
 			$http.get('/logout');
+		},
+		isStudent: function() {
+			return (user.type === this.type.STUDENT);
+		},
+		isInstructor: function() {
+			return (user.type === this.type.INSTRUCTOR);
 		},
 		on: function(event, cb) {
 			events[event].push(cb);

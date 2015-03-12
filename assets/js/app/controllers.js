@@ -78,11 +78,12 @@ angular.module('app.controllers', ['app.services', 'ui.router'])
 		}
 	};
 })
-.controller('DashboardCtrl', function($scope, $http) {
+.controller('DashboardCtrl', function($scope, $http, User) {
 	$scope.error = {
 		generic: ''
 	};
 	$scope.assignments = [];
+	$scope.user = User;
 
 	$http.get('/assignment?sort=dueAt DESC')
 	.success(function(assignments) {
@@ -109,7 +110,6 @@ angular.module('app.controllers', ['app.services', 'ui.router'])
 		$scope.assignments = _.sortBy(unsorted, function(val) {
 			return -1*val.week;
 		});
-		console.log($scope.assignments);
 	})
 	.error(function(err) {
 		$scope.error.generic = err.summary || err;
@@ -148,6 +148,52 @@ angular.module('app.controllers', ['app.services', 'ui.router'])
 			};
 
 			$http.post('/assignment', data)
+			.success(function(newAssignment) {
+				$state.go('assignment', {id: newAssignment.id});
+			})
+			.error(function(err) {
+				$scope.error.generic = err.summary;
+			});
+		}
+	};
+})
+.controller('EditAssignmentCtrl', function($scope, $http, $state, $stateParams, Validate) {
+	$scope.error = {
+		name: '',
+		url: '',
+		dueDate: '',
+		dueTime: '',
+		generic: ''
+	};
+	$scope.assignment = {};
+
+	$http.get('/assignment/'+$stateParams.id)
+	.success(function(assignment) {
+		$scope.assignment = assignment;
+		$scope.assignment.dueDate = moment(assignment.dueAt).toDate();
+		$scope.assignment.dueTime = moment(assignment.dueAt).toDate();
+	})
+	.error(function(err) {
+		$scope.error.generic = err.summary || err;
+	});
+
+	$scope.edit = function(assignment) {
+		$scope.error = Validate.assignment(assignment);
+
+		console.log('edit');
+
+		if(!Validate.hasError($scope.error)) {
+			var dueAt = moment(assignment.dueDate);
+			dueAt.hour(assignment.dueTime.getHours());
+			dueAt.minute(assignment.dueTime.getMinutes());
+			dueAt.second(assignment.dueTime.getSeconds());
+			var data = {
+				name: assignment.name,
+				url: assignment.url,
+				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
+			};
+
+			$http.put('/assignment/'+assignment.id, data)
 			.success(function(newAssignment) {
 				$state.go('assignment', {id: newAssignment.id});
 			})
