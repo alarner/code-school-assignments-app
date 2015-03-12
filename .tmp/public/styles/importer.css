@@ -3135,6 +3135,10 @@ nav {
   text-decoration: none; }
   .btn:hover {
     background: #84aac9; }
+  .btn.danger {
+    background: #d9534f; }
+    .btn.danger:hover {
+      background: #d2322d; }
 
 .assignment {
   margin: 4em auto;

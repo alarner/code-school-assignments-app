@@ -34,7 +34,7 @@ this["JST"]["assets/templates/edit-assignment.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<section class="form assignment">\n\t<h1 ng-bind="assignment.name"></h1>\n\t<form class="form" ng-submit="edit(assignment)">\n\t\t<div ng-include="\'templates/partials/assignment-form.html\'"></div>\n\t\t<button type="submit" class="btn">Save Assignment</button>\n\t\t<button type="button" class="btn" ng-click="verifyDelete()">Delete</button>\n\t</form>\n</section>';
+__p += '<section class="form assignment">\n\t<h1 ng-bind="assignment.name"></h1>\n\t<form class="form" ng-submit="edit(assignment)">\n\t\t<div ng-include="\'templates/partials/assignment-form.html\'"></div>\n\t\t<button type="button" class="btn danger" ng-click="verifyDelete()">Delete</button>\n\t\t<button type="submit" class="btn">Save Assignment</button>\n\t</form>\n</section>';
 
 }
 return __p
@@ -74,7 +74,7 @@ this["JST"]["assets/templates/partials/verify-delete-assignment.html"] = functio
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="dialog-contents">\n    <p>Are you sure you want to permanently delete this assignment?</p>\n    <button type="button" class="btn" ng-click="closeThisDialog(\'cancel\')">Cancel</button>\n    <button type="button" class="btn" ng-click="closeThisDialog(\'delete\')">Delete</button>\n</div>';
+__p += '<div class="dialog-contents">\n\t<p>Are you sure you want to permanently delete this assignment?</p>\n\t<button type="button" class="btn danger" ng-click="closeThisDialog(\'delete\')">Delete</button>\n\t<button type="button" class="btn" ng-click="closeThisDialog(\'cancel\')">Cancel</button>\n</div>';
 
 }
 return __p
