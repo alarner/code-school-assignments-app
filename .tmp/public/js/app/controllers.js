@@ -113,7 +113,15 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	})
 	.error(function(err) {
 		$scope.error.generic = err.summary || err;
+	});
+
+	$http.get('/submission/mine')
+	.success(function(submissions) {
+		console.log(submissions);
 	})
+	.error(function(err) {
+		console.log(err);
+	});
 })
 .controller('PermissionDeniedCtrl', function($scope) {
 
@@ -180,8 +188,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	$scope.edit = function(assignment) {
 		$scope.error = Validate.assignment(assignment);
 
-		console.log('edit');
-
 		if(!Validate.hasError($scope.error)) {
 			var dueAt = moment(assignment.dueDate);
 			dueAt.hour(assignment.dueTime.getHours());
@@ -238,6 +244,30 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		$scope.error.generic = err.summary || err;
 	});
 })
-.controller('SubmitCtrl', function($scope, $stateParams) {
+.controller('SubmitCtrl', function($scope, $state, $stateParams, $http, Validate) {
+	$scope.error = {
+		url: '',
+		notes: '',
+		generic: ''
+	};
+	$scope.submission = {
+		url: '',
+		notes: ''
+	};
 
+	$scope.submit = function(submission) {
+		submission.assignment = $stateParams.id;
+		$scope.error = Validate.submission(submission);
+
+		if(!Validate.hasError($scope.error)) {
+			// submission.
+			$http.post('/submission', submission)
+			.success(function(newSubmission) {
+				$state.go('dashboard');
+			})
+			.error(function(err) {
+				$scope.error.generic = err.summary || err;
+			});
+		}
+	};
 });

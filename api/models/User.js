@@ -7,6 +7,7 @@ var User = {
     email     : { type: 'email',  unique: true },
     type	  : { type: 'integer', required: true, defaultsTo: 1},
     passports : { collection: 'Passport', via: 'user' },
+    submissions: { collection: 'Submission', via: 'user' },
     deletedAt: {
       type: 'datetime',
       required: false

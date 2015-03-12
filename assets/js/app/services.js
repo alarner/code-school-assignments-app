@@ -108,6 +108,33 @@ angular.module('app.services', [])
 			return error;
 		},
 
+		submission: function(submission) {
+			var error = {
+				url: '',
+				notes: ''
+			};
+
+			if(!submission.url) {
+				error.url = 'Enter the submission url.';
+			}
+			else if(!validator.isURL(submission.url, {require_protocol: true})) {
+				error.url = 'Invalid url.';
+			}
+
+			if(!submission.notes) {
+				error.notes = 'Please enter notes.';
+			}
+
+			if(!submission.assignment) {
+				error.generic = 'The submission must be associated with an assignment.';
+			}
+			else if(!validator.isInt(submission.assignment.toString())) {
+				error.generic = 'The associated assignment must be an integer.';
+			}
+
+			return error;
+		},
+
 		hasError: function(error) {
 			for(var i in error) {
 				if(error.hasOwnProperty(i) && error[i]) {

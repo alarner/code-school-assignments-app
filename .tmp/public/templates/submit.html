@@ -1,6 +1,7 @@
 <section class="form submit">
 	<h1>{{ assignment.name }}</h1>
 	<form class="form" ng-submit="submit(submission)">
+		<p class="error" ng-show="error.generic" ng-bind="error.generic"></p>
 		<label ng-class="error.url ? 'error' : ''">
 			<div class="label required">URL</div>
 			<input type="text" placeholder="Enter the submission URL" ng-model="submission.url">

@@ -1,5 +1,5 @@
 /**
-* Assignment.js
+* Submission.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -8,21 +8,19 @@
 module.exports = {
 
   attributes: {
-  	name: {
-  		type: 'string',
-  		required: true
-  	},
   	url: {
   		type: 'string',
   		required: true
   	},
-  	dueAt: {
-  		type: 'datetime',
-  		required: true
+  	notes: {
+  		type: 'text',
+  		required: false
   	},
-    submissions: {
-      collection: 'Submission',
-      via: 'assignment'
+  	assignment: {
+  		model: 'Assignment'
+  	},
+    user: {
+      model: 'User'
     },
     deletedAt: {
       type: 'datetime',
