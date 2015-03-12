@@ -25,6 +25,7 @@ module.exports = {
 			where: { user: req.user.id },
 			sort: 'createdAt DESC'
 		})
+		.populate('grade')
 		.exec(function(err, submissions) {
 			if(err) {
 				res.status(500);

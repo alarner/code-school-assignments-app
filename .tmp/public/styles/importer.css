@@ -2983,6 +2983,24 @@
 body {
   font-family: 'open sans', arial, sans-serif; }
 
+.primary {
+  color: #428bca; }
+
+.success {
+  color: #5cb85c; }
+
+.info {
+  color: #5bc0de; }
+
+.warn {
+  color: #f0ad4e; }
+
+.danger {
+  color: #d2322d; }
+
+.default {
+  color: #aaaaaa; }
+
 main {
   overflow: hidden;
   margin: 0 1em; }
@@ -2999,6 +3017,47 @@ main {
   main {
     margin: 0 auto;
     width: 1168px; } }
+.status {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  display: block; }
+  .status:after {
+    font-family: Ionicons;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    line-height: 30px;
+    font-size: 1.5em; }
+  .status.not-submitted {
+    background: #aaaaaa; }
+  .status.late {
+    background: #e48481; }
+    .status.late:after {
+      content: "\f100";
+      color: #7e1e1b; }
+  .status.not-graded {
+    background: #a3d7a3; }
+    .status.not-graded:after {
+      content: "\f3b3";
+      color: #357935; }
+  .status.incomplete {
+    background: repeating-linear-gradient(45deg, transparent, transparent 5px, #f8d9ac 5px, #f8d9ac 10px);
+    border: 2px solid #f8d9ac;
+    box-sizing: border-box; }
+  .status.doa {
+    background: #e48481; }
+    .status.doa:after {
+      content: "\f128";
+      color: #7e1e1b; }
+  .status.good {
+    background: #a3d7a3; }
+  .status.great {
+    background: #a3d7a3; }
+    .status.great:after {
+      content: "\f24e";
+      color: #357935; }
+
 nav {
   background-color: #6091BA; }
   nav section {
@@ -3157,36 +3216,35 @@ nav {
     color: #2f506c; }
   .dashboard .week {
     margin-bottom: 3em; }
-  .dashboard .weekly-progress {
-    overflow: hidden;
-    margin-bottom: 2em; }
-    .dashboard .weekly-progress button {
-      display: block;
-      float: left;
-      width: 4em;
-      height: 1em;
-      border-radius: 0;
-      background: #ccc;
-      border: 1px solid #ccc;
-      border: 0;
-      margin-right: 2px; }
-      .dashboard .weekly-progress button:hover {
-        border: 1px solid #999; }
+    .dashboard .week .status {
+      margin: 4px 8px 4px 0; }
   .dashboard .assignments .a {
     overflow: hidden;
     padding: 1em;
     margin-left: 1em;
     color: #333; }
-    .dashboard .assignments .a > div {
+    .dashboard .assignments .a > div, .dashboard .assignments .a > a {
       float: left; }
     .dashboard .assignments .a > a {
-      display: block;
+      text-decoration: none;
+      color: #333; }
+    .dashboard .assignments .a .buttons {
       float: right; }
+      .dashboard .assignments .a .buttons a {
+        display: block;
+        float: left;
+        margin-left: 0.5em; }
     .dashboard .assignments .a .datetime {
+      display: block;
       margin-right: 1em;
       min-width: 5.625em; }
-    .dashboard .assignments .a .time {
+    .dashboard .assignments .a .time, .dashboard .assignments .a .status {
       font-size: 12px; }
+    .dashboard .assignments .a .status {
+      font-weight: normal;
+      width: 100%; }
+      .dashboard .assignments .a .status span {
+        font-weight: bold; }
   .dashboard .assignments .a:nth-child(odd) {
     background: #ECECEC; }
 

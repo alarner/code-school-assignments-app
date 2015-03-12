@@ -1,18 +1,28 @@
 <section class="dashboard">
+	<div ng-hide="week.length">
+		There are no assignments right now. Come back later...
+	</div>
 	<div class="week" ng-repeat="week in assignments">
-		<h1>{{ week.start | date : 'MMM. d'}} - {{ week.end | date : 'MMM. d'}}</h1>
-		<div class="weekly-progress">
-			<button ng-repeat="assignment in week.assignments"></button>
-		</div>
+		<h1>{{ week.start.toDate() | date : 'MMM. d'}} - {{ week.end.toDate() | date : 'MMM. d'}}</h1>
 		<div class="assignments">
 			<div class="a" ng-repeat="assignment in week.assignments">
-				<div class="datetime">
-					<div>{{ assignment.dueAt | date : 'EEEE'}}</div>
-					<div class="time">{{ assignment.dueAt | date : 'h:mm a'}}</div>
+				<!--<a href="#" class="status" ng-class="assignment.status()" ui-sref="assignment({id: assignment.attributes.id})"></a>-->
+				<a href="#" class="datetime" ui-sref="assignment({id: assignment.attributes.id})">
+					<div>{{ assignment.attributes.dueAt.toDate() | date : 'EEEE'}}</div>
+					<div class="time">{{ assignment.attributes.dueAt.toDate() | date : 'h:mm a'}}</div>
+				</a>
+				<a href="#" ui-sref="assignment({id: assignment.attributes.id})">
+					<div ng-bind="assignment.attributes.name"></div>
+					<div class="status" ng-show="user.isStudent()">Status: <span ng-class="assignment.status('color')">{{ assignment.status('name') }}</span></div>
+				</a>
+
+				<div class="buttons">
+					<a ui-sref="submit({id: assignment.attributes.id})" class="btn" ng-show="user.isStudent()">{{ assignment.hasSubmission() ? 'Re-s' : 'S' }}ubmit</a>
+					<a ui-sref="edit-assignment({id: assignment.attributes.id})" class="btn" ng-show="user.isInstructor()">Edit</a>
+					<a ng-href="{{ assignment.attributes.url }}" class="btn">
+						<div class="ion-link"></div>
+					</a>
 				</div>
-				<div ng-bind="assignment.name"></div>
-				<a ui-sref="submit({id: assignment.id})" class="btn" ng-show="user.isStudent()">Submit</a>
-				<a ui-sref="edit-assignment({id: assignment.id})" class="btn" ng-show="user.isInstructor()">Edit</a>
 			</div>
 		</div>
 	</div>

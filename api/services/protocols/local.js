@@ -25,7 +25,9 @@ var validator = require('validator');
 exports.register = function (req, res, next) {
   var email    = req.param('email')
     , username = req.param('username')
-    , password = req.param('password');
+    , password = req.param('password')
+    , firstName = req.param('firstName')
+    , lastName = req.param('lastName');
 
   if (!email) {
     req.flash('error', 'Error.Passport.Email.Missing');
@@ -42,14 +44,30 @@ exports.register = function (req, res, next) {
     return next(new Error('No password was entered.'));
   }
 
+  if (!firstName) {
+    req.flash('error', 'Error.Passport.FirstName.Missing');
+    return next(new Error('No first name was entered.'));
+  }
+
+  if (!lastName) {
+    req.flash('error', 'Error.Passport.LastName.Missing');
+    return next(new Error('No last name was entered.'));
+  }
+
   User.create({
     username : username
   , email    : email
+  , firstName: firstName
+  , lastName : lastName
   }, function (err, user) {
     if (err) {
       if (err.code === 'E_VALIDATION') {
         if (err.invalidAttributes.email) {
           req.flash('error', 'Error.Passport.Email.Exists');
+        } else if(err.invalidAttributes.firstName) {
+          req.flash('error', 'Error.Passport.FirstName.Missing');
+        } else if(err.invalidAttributes.lastName) {
+          req.flash('error', 'Error.Passport.LastName.Missing');
         } else {
           req.flash('error', 'Error.Passport.User.Exists');
         }

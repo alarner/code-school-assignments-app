@@ -30,6 +30,10 @@ module.exports.policies = {
     '*': [ 'passport', 'isLoggedIn' ],
     create: ['passport', 'isStudent'],
     mine: ['passport', 'isStudent']
+  },
+
+  GradeController: {
+    '*': [ 'passport', 'isInstructor' ]
   }
 
 

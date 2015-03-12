@@ -4,6 +4,13 @@ body {
 	font-family: 'open sans', arial, sans-serif;
 }
 
+.primary { color: $primary; }
+.success { color: $success; }
+.info { color: $info; }
+.warn { color: $warn; }
+.danger { color: $danger; }
+.default { color: $default; }
+
 main {
 	overflow: hidden;
 	margin: 0 1em;

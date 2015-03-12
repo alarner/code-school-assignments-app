@@ -1,6 +1,6 @@
 describe('RegisterCtrl', function() {
 
-  var $scope;
+  var scope;
   var $httpBackend;
   var registerRequestHandler;
   var RegisterCtrl;
@@ -9,23 +9,29 @@ describe('RegisterCtrl', function() {
   beforeEach(module('app.controllers'));
 
   beforeEach(inject(function($rootScope, $controller, $injector) {
-    $scope = $rootScope.$new();
-    $httpBackend = $injector.get('$httpBackend');
-    registerRequestHandler = $httpBackend.when('POST', '/auth/local/register')
-    .respond({user: {}, redirect: '/'});
+    scope = $rootScope.$new();
+    // $httpBackend = $injector.get('$httpBackend');
+    // registerRequestHandler = $httpBackend.when('POST', '/auth/local/register')
+    // .respond({user: {}, redirect: '/'});
 
-    RegisterCtrl = $controller('RegisterCtrl', {$scope: $scope});
+    RegisterCtrl = $controller('RegisterCtrl', {$scope: scope});
   }));
 
-  it('should require a username', function() {
-    $scope.register({});
-    expect($scope.error.identifier).to.not.equal('');
+  it('should default to having no errors', function() {
+    expect(scope.error.identifier).to.equal('');
+    expect(scope.error.password).to.equal('');
   });
 
-  it('should not show errors if credentials are valid', function() {
-    $scope.register({identifier: 'test@test.com', password: 'password123'});
-    expect($scope.error.identifier).to.equal('');
+  it('should require a username', function() {
+    scope.register({});
+    expect(scope.error.identifier).to.equal('Enter your email address.');
+    expect(scope.error.password).to.equal('Enter a password');
   });
+
+  // it('should not show errors if credentials are valid', function() {
+  //   $scope.register({identifier: 'test@test.com', password: 'password123'});
+  //   expect($scope.error.identifier).to.equal('');
+  // });
 
   // it('should throw errors if server returns error status code', function() {
   //   registerRequestHandler.respond(500, {

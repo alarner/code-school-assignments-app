@@ -1,4 +1,4 @@
-angular.module('app', ['app.controllers', 'app.data', 'ui.router'])
+angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'])
 .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 	// $locationProvider.html5Mode(true);

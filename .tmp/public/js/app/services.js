@@ -1,4 +1,152 @@
 angular.module('app.services', [])
+.factory('AssignmentStatus', function() {
+	return {
+		LATE: {
+			cssClass: 'late',
+			name: 'Late',
+			color: 'danger'
+		},
+		NOT_SUBMITTED: {
+			cssClass: 'not-submitted',
+			name: 'Not Submitted',
+			color: 'default'
+		},
+		SUBMITTED: {
+			cssClass: 'submitted',
+			name: 'Submitted',
+			color: 'success'
+		},
+		DOA: {
+			cssClass: 'doa',
+			name: 'DOA',
+			color: 'danger'
+		},
+		INCOMPLETE: {
+			cssClass: 'incomplete',
+			name: 'Incomplete',
+			color: 'warn'
+		},
+		GOOD: {
+			cssClass: 'good',
+			name: 'Good',
+			color: 'success'
+		},
+		GREAT: {
+			cssClass: 'great',
+			name: 'Great',
+			color: 'success'
+		},
+		UNKNOWN: {
+			cssClass: 'unknown',
+			name: 'Unknown Status',
+			color: 'default'
+		}
+	};
+})
+.factory('Assignment', function(AssignmentStatus) {
+	return {
+		AssignmentModel: function(assignment, submissions) {
+			var self = this;
+
+			if(!_.isArray(submissions)) submissions = [];
+
+			this.submissions = submissions;
+			this.attributes = assignment;
+
+			this.attributes.dueAt = moment(this.attributes.dueAt);
+			this.attributes.createdAt = moment(this.attributes.createdAt);
+			this.attributes.updatedAt = moment(this.attributes.updatedAt);
+
+			// Output can be 'cssClass', 'name', or 'color'
+			this.status = function(output) {
+				var s = null;
+				if(!self.submissions.length) {
+					if(self.attributes.dueAt < moment()) {
+						s = AssignmentStatus.LATE;
+					}
+					else {
+						s = AssignmentStatus.NOT_SUBMITTED;
+					}
+				}
+				else {
+					var submission = self.submissions[0];
+					if(!submission.score) {
+						s = AssignmentStatus.SUBMITTED;
+					}
+					else {
+						switch(submission.score) {
+							case 0:
+								s = AssignmentStatus.DOA;
+							break;
+							case 1:
+								s = AssignmentStatus.INCOMPLETE;
+							break;
+							case 2:
+								s = AssignmentStatus.GOOD;
+							break;
+							case 3:
+								s = AssignmentStatus.GREAT;
+							break;
+							default:
+								s = AssignmentStatus.UNKNOWN;
+							break;
+						}
+					}
+				}
+
+				return s[output];
+			};
+
+			this.hasSubmission = function() {
+				return self.submissions.length;
+			};
+		},
+		createList: function(assignments, submissions) {
+			var list = [];
+			var AssignmentModel = this.AssignmentModel;
+
+			var keyedSubmissions = {};
+			_.each(submissions, function(submission) {
+				if(!keyedSubmissions.hasOwnProperty(submission.assignment.toString())) {
+					keyedSubmissions[submission.assignment.toString()] = []
+				}
+				keyedSubmissions[submission.assignment.toString()].push(submission);
+			});
+
+			_.each(assignments, function(assignment) {
+				list.push(new AssignmentModel(assignment, keyedSubmissions[assignment.id.toString()]));
+			});
+			return list;
+		},
+
+		groupListByWeek: function(list) {
+			console.log(list);
+			var assignmentLists = {};
+			_.each(list, function(assignment) {
+				var mdate = moment(assignment.attributes.dueAt);
+				var week = mdate.week();
+				if(!assignmentLists.hasOwnProperty(week)) {
+					assignmentLists[week] = [];
+				}
+				assignmentLists[week].push(assignment);
+			});
+
+			var unsorted = [];
+			_.forOwn(assignmentLists, function(val, key) {
+				var weekOfYear = parseInt(key);
+				unsorted.push({
+					week: weekOfYear,
+					start: moment().week(weekOfYear).day(1),
+					end: moment().week(weekOfYear).day(5),
+					assignments: val
+				});
+			});
+			return _.sortBy(unsorted, function(val) {
+				return -1*val.week;
+			});
+		}
+	};
+})
 .factory('User', function($http) {
 	var user = {};
 	var events = {

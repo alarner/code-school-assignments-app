@@ -1,0 +1,67 @@
+.status {
+	width: 30px;
+	height: 30px;
+	position: relative;
+	display: block;
+
+	&:after {
+		font-family: Ionicons;
+		text-align: center;
+		width: 100%;
+		position: absolute;
+		line-height: 30px;
+		font-size: 1.5em;
+	}
+
+	&.not-submitted {
+		background: $default;
+	}
+
+	&.late {
+		background: lighten($danger, 20%);
+		&:after {
+			content: "\f100";
+			color: darken($danger, 20%);
+		}
+	}
+
+	&.not-graded {
+		background: lighten($success, 20%);
+		&:after {
+			content: "\f3b3";
+			color: darken($success, 20%);
+		}
+	}
+
+	&.incomplete {
+		background: repeating-linear-gradient(
+			45deg,
+			transparent,
+			transparent 5px,
+			lighten($warn, 20%) 5px,
+			lighten($warn, 20%) 10px
+		);
+		border: 2px solid lighten($warn, 20%);
+		box-sizing: border-box;
+	}
+
+	&.doa {
+		background: lighten($danger, 20%);
+		&:after {
+			content: "\f128";
+			color: darken($danger, 20%);
+		}
+	}
+
+	&.good {
+		background: lighten($success, 20%);
+	}
+
+	&.great {
+		background: lighten($success, 20%);
+		&:after {
+			content: "\f24e";
+			color: darken($success, 20%);
+		}
+	}
+}

@@ -23,21 +23,35 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	$scope.error = {
 		identifier: '',
 		password: '',
+		firstName: '',
+		lastName: '',
 		generic: ''
 	};
 	$scope.credentials = {
 		identifier: '',
-		password: ''
+		password: '',
+		firstName: '',
+		lastName: ''
 	};
 
 	$scope.register = function(credentials) {
 		$scope.error = Validate.credentials(credentials);
 
+		if(!credentials.firstName) {
+			$scope.error.firstName = "Please enter your first name";
+		}
+
+		if(!credentials.lastName) {
+			$scope.error.lastName = "Please enter your last name";
+		}
+
 		if(!Validate.hasError($scope.error)) {
 			var registerObj = {
 				username: credentials.identifier,
 				email: credentials.identifier,
-				password: credentials.password
+				password: credentials.password,
+				firstName: credentials.firstName,
+				lastName: credentials.lastName
 			};
 			$http.post('/auth/local/register', registerObj)
 			.success(function(res) {
@@ -61,8 +75,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		password: ''
 	};
 
-	console.log($scope.credentials);
-
 	$scope.login = function(htmlCredentials) {
 		$scope.error = Validate.credentials(htmlCredentials);
 
@@ -78,50 +90,45 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 	};
 })
-.controller('DashboardCtrl', function($scope, $http, User) {
+.controller('DashboardCtrl', function($scope, $http, User, Assignment) {
 	$scope.error = {
 		generic: ''
 	};
 	$scope.assignments = [];
 	$scope.user = User;
 
+	var originalAssignments = false;
+	var originalSubmissions = false;
+	var combine = function() {
+		if(originalAssignments === false || originalSubmissions === false) return false;
+
+		var assignments = Assignment.createList(originalAssignments, originalSubmissions);
+		$scope.assignments = Assignment.groupListByWeek(assignments);
+	};
+
 	$http.get('/assignment?sort=dueAt DESC')
 	.success(function(assignments) {
-		var assignmentLists = {};
-		_.each(assignments, function(assignment) {
-			var mdate = moment(assignment.dueAt);
-			var week = mdate.week();
-			if(!assignmentLists.hasOwnProperty(week)) {
-				assignmentLists[week] = [];
-			}
-			assignmentLists[week].push(assignment);
-		});
-
-		var unsorted = [];
-		_.forOwn(assignmentLists, function(val, key) {
-			var weekOfYear = parseInt(key);
-			unsorted.push({
-				week: weekOfYear,
-				start: moment().week(weekOfYear).day(1).toDate(),
-				end: moment().week(weekOfYear).day(5).toDate(),
-				assignments: val
-			});
-		});
-		$scope.assignments = _.sortBy(unsorted, function(val) {
-			return -1*val.week;
-		});
+		originalAssignments = assignments;
+		combine();
 	})
 	.error(function(err) {
 		$scope.error.generic = err.summary || err;
 	});
 
-	$http.get('/submission/mine')
-	.success(function(submissions) {
-		console.log(submissions);
-	})
-	.error(function(err) {
-		console.log(err);
-	});
+	if(User.isStudent()) {
+		$http.get('/submission/mine')
+		.success(function(submissions) {
+			originalSubmissions = submissions;
+			combine();
+		})
+		.error(function(err) {
+			console.log(err);
+		});
+	}
+	else if(User.isInstructor()) {
+		originalSubmissions = [];
+		combine();
+	}
 })
 .controller('PermissionDeniedCtrl', function($scope) {
 

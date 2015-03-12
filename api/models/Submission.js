@@ -19,8 +19,16 @@ module.exports = {
   	assignment: {
   		model: 'Assignment'
   	},
+    status: {
+      type: 'integer',
+      required: true,
+      defaultsTo: 1
+    },
     user: {
       model: 'User'
+    },
+    grade: {
+      model: 'Grade'
     },
     deletedAt: {
       type: 'datetime',
