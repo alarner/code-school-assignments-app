@@ -19,7 +19,11 @@ module.exports = {
   	dueAt: {
   		type: 'datetime',
   		required: true
-  	}
+  	},
+    deletedAt: {
+      type: 'datetime',
+      required: false
+    }
   }
 };
 
