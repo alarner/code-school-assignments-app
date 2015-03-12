@@ -16,6 +16,7 @@ module.exports = function(config) {
 	// list of files / patterns to load in the browser
 	files: [
 		'assets/bower_components/angular/angular.js',
+		'assets/bower_components/ngDialog/js/ngDialog.js',
 		'assets/bower_components/angular-ui-router/release/angular-ui-router.js',
 		'assets/bower_components/angular-mocks/angular-mocks.js',
 		'assets/bower_components/lodash/lodash.js',
