@@ -108,12 +108,9 @@ angular.module('app.services', [])
 			var keyedSubmissions = {};
 			_.each(submissions, function(submission) {
 				if(!keyedSubmissions.hasOwnProperty(submission.assignment.toString())) {
-					if(_.isObject(submission.assignment)) {
-						submission.assignment = submission.assignment.id;
-					}
-					keyedSubmissions[submission.assignment.toString()] = []
+					keyedSubmissions[submission.assignment.id.toString()] = []
 				}
-				keyedSubmissions[submission.assignment.toString()].push(submission);
+				keyedSubmissions[submission.assignment.id.toString()].push(submission);
 			});
 
 			_.each(assignments, function(assignment) {
@@ -123,7 +120,6 @@ angular.module('app.services', [])
 		},
 
 		groupListByWeek: function(list) {
-			console.log(list);
 			var assignmentLists = {};
 			_.each(list, function(assignment) {
 				var mdate = moment(assignment.attributes.dueAt);

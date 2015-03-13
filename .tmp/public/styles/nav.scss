@@ -8,6 +8,14 @@ nav {
 		margin: 0 1em;
 	}
 
+	.grade-tools {
+		display: none;
+
+		&.show {
+			display: block;
+		}
+	}
+
 	a {
 		display: block;
 		padding: 0 1em;

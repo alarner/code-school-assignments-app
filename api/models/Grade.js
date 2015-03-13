@@ -18,6 +18,10 @@ module.exports = {
 		notes: {
 			type: 'text',
 			required: true
+		},
+		deletedAt: {
+			type: 'datetime',
+			required: false
 		}
 	}
 };

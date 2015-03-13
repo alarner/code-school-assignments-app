@@ -1,6 +1,7 @@
 angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
-.controller('NavCtrl', function($scope, $state, User) {
+.controller('NavCtrl', function($scope, $state, $rootScope, User) {
 	$scope.loggedIn = User.isLoggedIn();
+	$scope.grade = false;
 	if($scope.loggedIn) {
 		$scope.user = User.get();
 	}
@@ -11,6 +12,9 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	User.on('logout', function(u) {
 		$scope.loggedIn = false;
 		$state.go('login');
+	});
+	$rootScope.$on('grade', function(e, params) {
+		$scope.grade = params.show;
 	});
 	$scope.logout = function() {
 		User.logout();
@@ -90,7 +94,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 	};
 })
-.controller('DashboardCtrl', function($scope, $http, User, Assignment) {
+.controller('DashboardCtrl', function($scope, $http, $state, User, Assignment) {
 	$scope.error = {
 		generic: ''
 	};
@@ -137,6 +141,19 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 			console.log(err);
 		});
 	}
+
+	$scope.grade = function(assignmentId) {
+		for(var i=0; i<originalSubmissions.length; i++) {
+			var assignment = originalSubmissions[i].assignment;
+			if(assignment.id === assignmentId) {
+				$state.go('grade', {
+					assignmentId: assignmentId,
+					submissionId: originalSubmissions[i].id
+				});
+				break;
+			}
+		}
+	};
 })
 .controller('PermissionDeniedCtrl', function($scope) {
 
@@ -236,8 +253,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 					console.log(err);
 				});
 			}
-			console.log(data);
-			console.log(data.id + ' has been dismissed.');
 		});
 	};
 })
@@ -286,6 +301,22 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 	};
 })
-.controller('GradeCtrl', function($scope) {
-
+.controller('GradeCtrl', function($scope, $stateParams, $http) {
+	console.log($stateParams.assignmentId, $stateParams.submissionId);
+	$scope.error = {
+		generic: ''
+	}
+	$scope.submission = null;
+	$http.get('/submission/'+$stateParams.submissionId)
+	.success(function(submission) {
+		if(submission.assignment.id != $stateParams.assignmentId) {
+			$scope.error.generic = 'Somehow we grabbed a submission that isn\'t associated with the correct assignment.';
+		}
+		else {
+			$scope.submission = submission;
+		}
+	})
+	.error(function(err) {
+		$scope.error.generic = err.summary || err;
+	});
 });

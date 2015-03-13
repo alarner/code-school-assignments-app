@@ -20,7 +20,7 @@
 					
 					<a ui-sref="submit({id: assignment.attributes.id})" class="btn" ng-show="user.isStudent()">{{ assignment.hasSubmission() ? 'Re-s' : 'S' }}ubmit</a>
 
-					<a ui-sref="grade-assignment({assignmentId: assignment.attributes.id})" class="btn" ng-show="user.isInstructor() && assignment.submissions.length">Grade <span class="notification" ng-bind="assignment.submissions.length"></span></a>
+					<a href="#" class="btn" ng-show="user.isInstructor() && assignment.submissions.length" ng-click="grade(assignment.attributes.id)">Grade <span class="notification" ng-bind="assignment.submissions.length"></span></a>
 					
 					<a ui-sref="edit-assignment({id: assignment.attributes.id})" class="btn" ng-show="user.isInstructor()">Edit</a>
 					

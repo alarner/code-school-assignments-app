@@ -7,6 +7,17 @@
 			<a href="#" ui-sref-active="active" ng-show="loggedIn && user.type == 2" ui-sref="create-assignment"><span>Create Assignment</span></a>
 			<a href="#" ng-show="loggedIn" ng-click="logout()"><span>Logout</span></a>
 		</section>
+		<section ng-show="grade && showGrade" class="grade-tools" ng-class="grade ? 'show' : ''">
+			<div>
+				<textarea></textarea>
+			</div>
+			<div>
+				<button class="btn">DOA</button>
+				<button class="btn">INCOMPLETE</button>
+				<button class="btn">GOOD</button>
+				<button class="btn">GREAET</button>
+			</div>
+		</section>
 	</nav>
 	<main ui-view></main>
 </div>

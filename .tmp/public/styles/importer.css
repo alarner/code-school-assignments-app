@@ -3085,6 +3085,10 @@ nav {
   nav section {
     overflow: hidden;
     margin: 0 1em; }
+  nav .grade-tools {
+    display: none; }
+    nav .grade-tools.show {
+      display: block; }
   nav a {
     display: block;
     padding: 0 1em;

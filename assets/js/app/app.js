@@ -44,16 +44,6 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 		templateUrl: 'templates/grade.html',
 		controller: 'GradeCtrl'
 	})
-	.state('grade-assignment', {
-		url: '/grade/:assignmentId',
-		templateUrl: 'templates/grade.html',
-		controller: 'GradeCtrl'
-	})
-	.state('grade-submission', {
-		url: '/grade/:assignmentId/:submissionId',
-		templateUrl: 'templates/grade.html',
-		controller: 'GradeCtrl'
-	})
 	.state('permission-denied', {
 		url: '/permission-denied',
 		templateUrl: 'templates/permission-denied.html',
@@ -107,16 +97,6 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
 		requiresType: [2]
-	},
-	'grade-assignment': {
-		visibleLoggedIn: true,
-		visibleLoggedOut: false,
-		requiresType: [2]
-	},
-	'grade-submission': {
-		visibleLoggedIn: true,
-		visibleLoggedOut: false,
-		requiresType: [2]
 	}
 })
 .run(function($rootScope, $state, userData, User, stateSettings) {
@@ -126,23 +106,27 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 		function(event, toState, toParams, fromState, fromParams){
 			var go = null;
 			if(User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedIn) {
-				console.log(1);
 				go = 'dashboard';
 			}
 			else if(!User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedOut) {
-				console.log(2);
 				go = 'login';
 			}
 			else if(stateSettings[toState.name].requiresType.length){
-				console.log(3);
 				if(stateSettings[toState.name].requiresType.indexOf(User.get('type')) < 0) {
 					go = 'permission-denied';
 				}
 			}
 
 			if(go) {
+				console.log('go', go);
 				event.preventDefault();
 				$state.go(go);
+			}
+			else if(toState.name === 'grade') {
+				$rootScope.$emit('grade', {show: true});
+			}
+			else {
+				$rootScope.$emit('grade', {show: false});
 			}
 		}
 	);
