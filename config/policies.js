@@ -29,7 +29,9 @@ module.exports.policies = {
   SubmissionController: {
     '*': [ 'passport', 'isLoggedIn' ],
     create: ['passport', 'isStudent'],
-    mine: ['passport', 'isStudent']
+    find: ['passport', 'isInstructor'],
+    mine: ['passport', 'isStudent'],
+    ungraded: ['passport', 'isInstructor']
   },
 
   GradeController: {

@@ -39,6 +39,21 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 		templateUrl: 'templates/submit.html',
 		controller: 'SubmitCtrl'
 	})
+	.state('grade', {
+		url: '/grade/:assignmentId/:submissionId',
+		templateUrl: 'templates/grade.html',
+		controller: 'GradeCtrl'
+	})
+	.state('grade-assignment', {
+		url: '/grade/:assignmentId',
+		templateUrl: 'templates/grade.html',
+		controller: 'GradeCtrl'
+	})
+	.state('grade-submission', {
+		url: '/grade/:assignmentId/:submissionId',
+		templateUrl: 'templates/grade.html',
+		controller: 'GradeCtrl'
+	})
 	.state('permission-denied', {
 		url: '/permission-denied',
 		templateUrl: 'templates/permission-denied.html',
@@ -87,6 +102,21 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
 		requiresType: [1]
+	},
+	'grade': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'grade-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'grade-submission': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
 	}
 })
 .run(function($rootScope, $state, userData, User, stateSettings) {

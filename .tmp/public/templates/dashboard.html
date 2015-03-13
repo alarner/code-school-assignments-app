@@ -1,5 +1,5 @@
 <section class="dashboard">
-	<div ng-hide="week.length">
+	<div ng-hide="assignments.length" class="ng-hide">
 		There are no assignments right now. Come back later...
 	</div>
 	<div class="week" ng-repeat="week in assignments">
@@ -17,11 +17,17 @@
 				</a>
 
 				<div class="buttons">
+					
 					<a ui-sref="submit({id: assignment.attributes.id})" class="btn" ng-show="user.isStudent()">{{ assignment.hasSubmission() ? 'Re-s' : 'S' }}ubmit</a>
+
+					<a ui-sref="grade-assignment({assignmentId: assignment.attributes.id})" class="btn" ng-show="user.isInstructor() && assignment.submissions.length">Grade <span class="notification" ng-bind="assignment.submissions.length"></span></a>
+					
 					<a ui-sref="edit-assignment({id: assignment.attributes.id})" class="btn" ng-show="user.isInstructor()">Edit</a>
+					
 					<a ng-href="{{ assignment.attributes.url }}" class="btn">
 						<div class="ion-link"></div>
 					</a>
+
 				</div>
 			</div>
 		</div>

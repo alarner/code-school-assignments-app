@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
 
   // User is allowed, proceed to the next policy, 
   // or if this is the last policy, the controller
-  console.log(req.session.passport.user);
+  console.log('isInstructor?');
   if (req.user && req.user.type == UserType.INSTRUCTOR) {
     return next();
   }

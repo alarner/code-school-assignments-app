@@ -94,6 +94,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	$scope.error = {
 		generic: ''
 	};
+	$scope.loaded = '';
 	$scope.assignments = [];
 	$scope.user = User;
 
@@ -126,8 +127,15 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		});
 	}
 	else if(User.isInstructor()) {
-		originalSubmissions = [];
-		combine();
+		var where = { grade: null };
+		$http.get('/submission?where='+JSON.stringify(where))
+		.success(function(submissions) {
+			originalSubmissions = submissions;
+			combine();
+		})
+		.error(function(err) {
+			console.log(err);
+		});
 	}
 })
 .controller('PermissionDeniedCtrl', function($scope) {
@@ -277,4 +285,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 			});
 		}
 	};
+})
+.controller('GradeCtrl', function($scope) {
+
 });
