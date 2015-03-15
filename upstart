@@ -42,6 +42,7 @@ expect fork
 # env SPIN_SLEEP_TIME="2000"
  
 env NODE_BIN_DIR="/usr/local/bin"
+env NODE_ENV="aws"
 env NODE_PATH="/usr/local/lib/node_modules"
 env APPLICATION_PATH="/usr/share/nginx/www/assignments/app.js"
 env PIDFILE="/var/run/assignments.pid"
