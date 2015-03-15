@@ -8,12 +8,6 @@
 var validator = require('validator');
 var uuid = require('node-uuid');
 var url = require('url');
-var request = require('request');
-var unzip = require('unzip');
-var path = require('path');
-var fs = require('fs-extra');
-var recursive = require('recursive-readdir');
-var mime = require('mime');
 
 module.exports = {
 	create: function(req, res) {
@@ -158,92 +152,15 @@ module.exports = {
 					});
 				}
 
-				var dir = path.join(process.cwd(), '.tmp/downloads/', uuid.v4());
-				fs.mkdirp(dir, function(err) {
-					var key;
-					if(err) return cb(err);
-
-					var distSubdir = results.assignment.distSubdir;
-					if(distSubdir.charAt(0) !== '/') distSubdir = '/'+distSubdir;
-					if(distSubdir.charAt(distSubdir.length-1) !== '/') distSubdir += '/';
-					function filter(path) {
-						var arr = path.split('/');
-						arr.shift();
-						path = '/'+arr.join('/');
-						if(path.substring(0, distSubdir.length) === distSubdir) {
-							return path.substring(distSubdir.length);
-						}
-						return false;
-					}
-
-
-					request
-					.get('http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip')
-					.pipe(fs.createWriteStream(path.join(dir, 'zip.zip')))
-					.on('error', function(err) {
-						console.log(err);
-					})
-					.on('close', function() {
-						console.log('CLOSE');
-						var unzipPath = path.join(dir, 'unzip');
-						var q = async.queue(function(task, cb) {
-							var fpath = path.join(unzipPath, task.path);
-							s3.putObject({
-								Bucket: results.bucket.Bucket,
-								Key: task.key,
-								ACL: 'public-read',
-								ContentType: mime.lookup(fpath),
-								Body: fs.createReadStream(fpath)
-							}, function(err, data) {
-								console.log(err, data, mime.lookup(fpath));
-								cb(err, data);
-							});
-						}, 5);
-						fs.createReadStream(path.join(dir, 'zip.zip'))
-						.pipe(unzip.Extract({ path: unzipPath }))
-						.on('error', function(err) {
-							cb(err);
-						})
-						.on('close', function() {
-							recursive(unzipPath, function (err, files) {
-								// Files is an array of filename
-								_.each(files, function(file) {
-									var p = file.substring(unzipPath.length+1);
-									if(key = filter(p)) {
-										q.push({key: key, path: p}, function (err) {
-											console.log('finished processing foo');
-										});
-									}
-								});
-								cb();
-							});
-						});
-					});
-					// This is my failed attempt to stream the whole download right to s3.
-					// I kept getting the following errors:
-					// 	{ [Error: invalid distance too far back] errno: -3, code: 'Z_DATA_ERROR' }
-					// 	[Error: invalid signature: 0x2391703b]
-					// .pipe(unzip.Parse())
-					// .on('entry', function(entry) {
-					// 	// console.log(entry.type);
-					// 	if(entry.type === 'File' && (key = filter(entry.path))) {
-					// 		console.log(key);
-					// 		// entry.autodrain();
-					// 		q.push({key: key, entry: entry}, function (err) {
-					// 			console.log('finished processing foo');
-					// 		});
-					// 	}
-					// 	else {
-					// 		entry.autodrain();
-					// 	}
-					// })
-					// .on('error', function(err) {
-					// 	console.log(err);
-					// })
-					// .on('close', function() {
-					// 	console.log('CLOSE!');
-					// });
-				});
+				githubQueue.create('github', {
+					title: 'GitHub download for '+
+							req.user.firstName+' '+req.user.lastName+
+							' [assignment='+data.assignment+
+							', submission='+results.update.id+']',
+					target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
+					bucket: results.bucket.Bucket,
+					assignment: results.assignment
+				}).save(cb);
 			}]
 		}, function(err, result) {
 			if(err) {

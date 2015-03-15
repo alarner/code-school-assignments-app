@@ -4,3 +4,4 @@
 **/.sass-cache/**
 **bower.json**
 **/.git/**
+**/node_modules/kue/lib/http/public/**
