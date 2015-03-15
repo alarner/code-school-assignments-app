@@ -75,8 +75,8 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		generic: ''
 	};
 	$scope.credentials = {
-		identifier: 'anlarner@gmail.com',
-		password: ''
+		identifier: 'aero4x@gmail.com',
+		password: 'password'
 	};
 
 	$scope.login = function(htmlCredentials) {
