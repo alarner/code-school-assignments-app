@@ -7,6 +7,7 @@
 
 var validator = require('validator');
 var uuid = require('node-uuid');
+var url = require('url');
 
 module.exports = {
 	create: function(req, res) {
@@ -72,7 +73,8 @@ module.exports = {
 			}],
 			// Create a new aws bucket to store the submission data
 			bucket: ['create', function(cb, results) {
-
+				var parsedUrl = url.parse(data.url);
+				if(parsedUrl.host.toLowerCase() != 'github.com') return cb(null, false);
 				var createBucket = function(cb) {
 					s3.createBucket({
 						Bucket: uuid.v4(),
@@ -99,7 +101,7 @@ module.exports = {
 				createBucket(cb);
 			}],
 			update: ['create', 'bucket', function(cb, results) {
-				console.log(results);
+				if(!results.bucket) return cb(null, results.create);
 				Submission.update({
 					id: results.create.id
 				}, {

@@ -164,13 +164,15 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		url: '',
 		dueDate: '',
 		dueTime: '',
+		distSubdir: '',
 		generic: ''
 	};
 	$scope.assignment = {
 		name: '',
 		url: '',
 		dueDate: moment().add(1, 'day').toDate(),
-		dueTime: new Date(1970, 0, 1, 22, 0, 0)
+		dueTime: new Date(1970, 0, 1, 22, 0, 0),
+		distSubdir: ''
 	};
 
 	$scope.create = function(assignment) {
@@ -184,7 +186,8 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 			var data = {
 				name: assignment.name,
 				url: assignment.url,
-				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
+				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss'),
+				distSubdir: distSubdir || null
 			};
 
 			$http.post('/assignment', data)
@@ -228,7 +231,8 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 			var data = {
 				name: assignment.name,
 				url: assignment.url,
-				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss')
+				dueAt: dueAt.format('YYYY-MM-DD HH:mm:ss'),
+				distSubdir: assignment.distSubdir || null
 			};
 
 			$http.put('/assignment/'+assignment.id, data)

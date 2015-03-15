@@ -7,27 +7,31 @@
 
 module.exports = {
 
-  attributes: {
-  	name: {
-  		type: 'string',
-  		required: true
-  	},
-  	url: {
-  		type: 'string',
-  		required: true
-  	},
-  	dueAt: {
-  		type: 'datetime',
-  		required: true
-  	},
-    submissions: {
-      collection: 'Submission',
-      via: 'assignment'
-    },
-    deletedAt: {
-      type: 'datetime',
-      required: false
-    }
-  }
+	attributes: {
+		name: {
+			type: 'string',
+			required: true
+		},
+		url: {
+			type: 'string',
+			required: true
+		},
+		dueAt: {
+			type: 'datetime',
+			required: true
+		},
+		distSubdir: {
+			type: 'string',
+			required: false
+		},
+		submissions: {
+			collection: 'Submission',
+			via: 'assignment'
+		},
+		deletedAt: {
+			type: 'datetime',
+			required: false
+		}
+	}
 };
 

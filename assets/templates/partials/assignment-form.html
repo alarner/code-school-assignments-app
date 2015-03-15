@@ -18,3 +18,9 @@
 	<input type="time" ng-model="assignment.dueTime" step="60">
 	<p class="error" ng-bind="error.dueTime" ng-show="error.dueTime"></p>
 </label>
+<label>
+	<div class="label">Distribution Subdirectory</div>
+	<input type="text" ng-model="assignment.distSubdir" placeholder="/dist">
+	<p class="error" ng-bind="error.distSubdir" ng-show="error.distSubdir"></p>
+	<p class="default">You may optionally specify a subdirectory of the GitHub repo where you are requiring a distribution of the assignment to be located. If you do that particular subdirectory will be hosted on S3 for viewing.</p>
+</label>
