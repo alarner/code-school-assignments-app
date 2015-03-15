@@ -58,8 +58,8 @@ NAME="Assignments"
 NODE_BIN_DIR="/usr/local/bin"
 NODE_PATH="/usr/local/lib/node_modules"
 APPLICATION_PATH="/usr/share/nginx/www/assignments/app.js"
-PIDFILE="/var/run/assignments.pid"
-LOG="/var/log/assignments.log"
+PIDFILE="/home/ubuntu/assignments/assignments.pid"
+LOG="/home/ubuntu/assignments/assignments-forever.log"
 MIN_UPTIME="5000"
 SPIN_SLEEP_TIME="2000"
  
@@ -90,7 +90,7 @@ start() {
     #
     # Note that redirecting the output to /dev/null (or anywhere) is necessary
     # to make this script work if provisioning the service via Chef.
-    forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &
+    sudo -u ubuntu forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &
     echo "forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &"
     RETVAL=$?
 }
@@ -99,7 +99,7 @@ stop() {
     if [ -f $PIDFILE ]; then
         echo "Shutting down $NAME"
         # Tell Forever to stop the process.
-        forever stop $APPLICATION_PATH 2>&1 > /dev/null
+        sudo -u ubuntu forever stop $APPLICATION_PATH 2>&1 > /dev/null
         # Get rid of the pidfile, since Forever won't do that.
         rm -f $PIDFILE
         RETVAL=$?
@@ -127,7 +127,7 @@ status() {
     #
     # So instead we add an extra layer of indirection with this to bypass that
     # issue.
-    echo `forever list` | grep -q "$APPLICATION_PATH"
+    echo `sudo -u ubuntu forever list` | grep -q "$APPLICATION_PATH"
     if [ "$?" -eq "0" ]; then
         echo "$NAME is running."
         RETVAL=0
