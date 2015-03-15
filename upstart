@@ -48,11 +48,18 @@ env PIDFILE="/var/run/assignments.pid"
 env LOG="/var/log/assignments.log"
 env MIN_UPTIME="5000"
 env SPIN_SLEEP_TIME="2000"
+
+pre-start script
+	logger "pre-start for assignments"
+end script
  
 script
 		# Add the node executables to the path, which includes Forever if it is
 		# installed globally, which it should be.
 		PATH=$NODE_BIN_DIR:$PATH
+
+		exec logger "just before executing forever"
+
 		# The minUptime and spinSleepTime settings stop Forever from thrashing if
 		# the application fails immediately on launch. This is generally necessary
 		# to avoid loading development servers to the point of failure every time
