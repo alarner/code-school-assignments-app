@@ -7,33 +7,37 @@
 
 module.exports = {
 
-  attributes: {
-  	url: {
-  		type: 'string',
-  		required: true
-  	},
-  	notes: {
-  		type: 'text',
-  		required: false
-  	},
-  	assignment: {
-  		model: 'Assignment'
-  	},
-    status: {
-      type: 'integer',
-      required: true,
-      defaultsTo: 1
-    },
-    user: {
-      model: 'User'
-    },
-    grade: {
-      model: 'Grade'
-    },
-    deletedAt: {
-      type: 'datetime',
-      required: false
-    }
-  }
+	attributes: {
+		url: {
+			type: 'string',
+			required: true
+		},
+		notes: {
+			type: 'text',
+			required: false
+		},
+		assignment: {
+			model: 'Assignment'
+		},
+		status: {
+			type: 'integer',
+			required: true,
+			defaultsTo: 1
+		},
+		user: {
+			model: 'User'
+		},
+		grade: {
+			model: 'Grade'
+		},
+		location: {
+			type: 'string',
+			required: false
+		},
+		deletedAt: {
+			type: 'datetime',
+			required: false
+		}
+	}
 };
 

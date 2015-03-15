@@ -6,12 +6,13 @@
  */
 
 var validator = require('validator');
+var uuid = require('node-uuid');
 
 module.exports = {
 	create: function(req, res) {
 		var data = req.body;
 		data.user = req.user.id;
-		async.series({
+		async.auto({
 			// Validate data
 			validation: function(cb) {
 				var err = null;
@@ -54,7 +55,7 @@ module.exports = {
 				cb(err);
 			},
 			// Delete any old ungraded submissions for this project
-			cleanup: function(cb) {
+			cleanup: ['validation', function(cb) {
 				Submission.update(
 					{
 						user: data.user,
@@ -64,27 +65,65 @@ module.exports = {
 					{ deletedAt: new Date() },
 					cb
 				);
-			},
-			create: function(cb) {
+			}],
+			// Create the submission record
+			create: ['validation', 'cleanup', function(cb) {
 				Submission.create(data, cb);
-			}
+			}],
+			// Create a new aws bucket to store the submission data
+			bucket: ['create', function(cb, results) {
+
+				var createBucket = function(cb) {
+					s3.createBucket({
+						Bucket: uuid.v4(),
+						ACL: 'public-read',
+
+					}, function(err, data) {
+						if(err) {
+							switch(err.code) {
+								case 'BucketAlreadyOwnedByYou':
+								case 'BucketAlreadyExists':
+									createBucket(cb);
+								break;
+								default:
+									cb(err);
+								break;
+							}
+						}
+						else {
+							cb(null, data);
+						}
+					});
+				};
+
+				createBucket(cb);
+			}],
+			update: ['create', 'bucket', function(cb, results) {
+				console.log(results);
+				Submission.update({
+					id: results.create.id
+				}, {
+					location: results.bucket.Location
+				}, cb);
+			}]
 		}, function(err, result) {
 			if(err) {
 				res.status(500);
 				res.jsonx(err);
 			}
 			else {
-				res.jsonx(result.create);
+				res.jsonx(result.update);
 			}
 		})
 	},
 	mine: function(req, res) {
 		Submission
 		.find({
-			where: { user: req.user.id },
+			where: { user: req.user.id, deletedAt: null },
 			sort: 'createdAt DESC'
 		})
 		.populate('grade')
+		.populate('assignment')
 		.exec(function(err, submissions) {
 			if(err) {
 				res.status(500);
@@ -94,6 +133,9 @@ module.exports = {
 				res.jsonx(submissions);
 			}
 		});
+	},
+	test : function(req, res) {
+		
 	}
 };
 

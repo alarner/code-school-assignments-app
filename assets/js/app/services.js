@@ -107,7 +107,7 @@ angular.module('app.services', [])
 
 			var keyedSubmissions = {};
 			_.each(submissions, function(submission) {
-				if(!keyedSubmissions.hasOwnProperty(submission.assignment.toString())) {
+				if(!keyedSubmissions.hasOwnProperty(submission.assignment.id.toString())) {
 					keyedSubmissions[submission.assignment.id.toString()] = []
 				}
 				keyedSubmissions[submission.assignment.id.toString()].push(submission);
