@@ -41,6 +41,15 @@ kue.app.set('title', 'Iron Assignments Queue');
 // }
 queue.process('github', function(job, done){
 	job.progress(progress.START_ALL, progress.FINISH_ALL);
+	var distSubdir = job.data.assignment.distSubdir;
+	if(distSubdir) {
+		if(distSubdir.charAt(0) !== '/') {
+			distSubdir = '/'+distSubdir;
+		} 
+		if(distSubdir.charAt(distSubdir.length-1) !== '/') {
+			distSubdir += '/';
+		} 
+	}
 	async.auto({
 		dir: function(cb) {
 			job.progress(progress.START_MKDIR, progress.FINISH_ALL);
@@ -92,8 +101,8 @@ queue.process('github', function(job, done){
 				var arr = p.split('/');
 				arr.shift();
 				p = '/'+arr.join('/');
-				if(p.substring(0, job.data.assignment.distSubdir.length) === job.data.assignment.distSubdir) {
-					return p.substring(job.data.assignment.distSubdir.length);
+				if(p.substring(0, distSubdir.length) === distSubdir) {
+					return p.substring(distSubdir.length);
 				}
 				return false;
 			}
