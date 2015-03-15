@@ -3,6 +3,21 @@
 	<div ng-show="assignment">
 		<h1>{{ assignment.name }}</h1>
 		<div>Due on: {{ assignment.dueAt | date : 'fullDate' }}</div>
+		<div ng-show="assignment.distSubdir">
+			<div>Required Files:</div>
+			<ul>
+				<li>{{ assignment.distSubdir }}/index.html</li>
+			</ul>
+		</div>
 		<div><a ng-href="{{ assignment.url }}">Link to instructions</a></div>
+		<div ng-show="assignment.submissions.length">
+			<div ng-repeat="submission in assignment.submissions">
+				<div ng-bind="submission.url"></div>
+				<div ng-bind="submission.createdAt"></div>
+				<div ng-show="submission.grade" ng-bind="submission.grade.score"></div>
+				<div ng-bind="submission.notes"></div>
+				<a ng-href="{{submission.location}}" ng-show="submission.location">Live Website</a>
+			</div>
+		</div>
 	</div>
 </section>

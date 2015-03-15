@@ -260,7 +260,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		});
 	};
 })
-.controller('AssignmentCtrl', function($scope, $stateParams, $http) {
+.controller('AssignmentCtrl', function($scope, $stateParams, $http, User) {
 	$scope.error = {
 		generic: ''
 	};
@@ -273,6 +273,8 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	$http.get('/assignment/'+$stateParams.id)
 	.success(function(assignment) {
 		$scope.assignment = assignment;
+		console.log(assignment);
+
 	})
 	.error(function(err) {
 		$scope.error.generic = err.summary || err;
