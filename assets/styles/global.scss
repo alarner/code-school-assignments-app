@@ -12,6 +12,10 @@ html, body {
 .danger { color: $danger; }
 .default { color: $default; }
 
+a {
+	cursor: pointer;
+}
+
 main {
 	overflow: hidden;
 	margin: 0 1em;

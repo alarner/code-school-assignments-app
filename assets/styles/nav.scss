@@ -1,5 +1,15 @@
 @import 'variables';
 
+.grade-form-link {
+	display: none;
+}
+
+.app-grade {
+	.grade-form-link {
+		display: block;
+	}
+}
+
 nav {
 	background-color: #6091BA;
 	height: 3.125em;
@@ -30,6 +40,10 @@ nav {
 
 		&:hover {
 			background-color: #4678a1;
+		}
+
+		&.right {
+			float: right;
 		}
 	}
 

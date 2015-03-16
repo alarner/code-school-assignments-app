@@ -17,6 +17,10 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 	$scope.logout = function() {
 		User.logout();
 	};
+
+	$scope.toggleGradeForm = function() {
+		$rootScope.$emit('toggle-grade-form');
+	};
 })
 .controller('HomeCtrl', function($scope) {
 	
@@ -306,7 +310,10 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 	};
 })
 .controller('GradeCtrl', function($scope, $rootScope, $stateParams, $http, hotkeys, focus) {
-	console.log($stateParams.assignmentId, $stateParams.submissionId);
+	function toggleGradeForm() {
+		$scope.showGrade = !$scope.showGrade
+		focus('grade-notes');
+	}
 	$scope.error = {
 		generic: ''
 	}
@@ -327,13 +334,14 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		$scope.error.generic = err.summary || err;
 	});
 
+	$rootScope.$on('toggle-grade-form', function() {
+		toggleGradeForm();
+	});
+
 	hotkeys.add({
 		combo: 'ctrl+shift+z',
 		description: 'This one goes to 11',
-		allowIn: ['TEXTAREA'],
-		callback: function() {
-			$scope.showGrade = !$scope.showGrade
-			focus('grade-notes');
-		}
+		allowIn: ['TEXTAREA', 'IFRAME'],
+		callback: toggleGradeForm
 	});
 });
