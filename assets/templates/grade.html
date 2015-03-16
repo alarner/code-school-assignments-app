@@ -1,1 +1,18 @@
-grade
+<section>
+	<div ng-show="showGrade" class="grade-tools">
+		<div class="notes-score">
+			<div class="notes">
+				<textarea focus-on="grade-notes"></textarea>
+			</div>
+			<div class="score">
+				<button class="btn">DOA</button>
+				<button class="btn">INCOMPLETE</button>
+				<button class="btn">GOOD</button>
+				<button class="btn">GREAT</button>
+			</div>
+		</div>
+	</div>
+	<iframe src="{{submission ? (submission.location+'index.html' | trustAsResourceUrl) : ''}}" width="100%" height="100%">
+		<p>Your browser does not support iframes.</p>
+	</iframe>
+</section>

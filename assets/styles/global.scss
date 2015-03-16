@@ -1,7 +1,8 @@
 @import 'variables';
 
-body {
+html, body {
 	font-family: 'open sans', arial, sans-serif;
+	height: 100%;
 }
 
 .primary { color: $primary; }

@@ -1,0 +1,86 @@
+.app-grade {
+	height: 100%;
+	main {
+		width: 100%;
+		height: 100%;
+		padding-top: 3.125em;
+		box-sizing: border-box;
+		position: relative;
+		top: -3.125em;
+		margin: 0;
+
+		section {
+			width: 100%;
+			height: 100%;
+		}
+
+		iframe {
+			border: 0;
+			overflow: scroll;
+		}
+	}
+}
+
+.grade-tools {
+	width: 100%;
+	background: lighten(#6091BA, 20%);
+	padding: 2em 1em;
+	box-sizing: border-box;
+	margin: 0;
+	position: absolute;
+	z-index: 1;
+	top: 3.125em;;
+
+	.notes-score {
+		overflow: hidden;
+		position: relative;
+	}
+
+	.notes {
+		textarea {
+			height: 14em;
+			width: 100%;
+			box-sizing: border-box;
+			margin: 0;
+			padding: 1em;
+		}
+		float: left;
+		padding-right: 11em;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.score {
+		width: 10em;
+		position: absolute;
+		right: 0;
+
+		button {
+			display: block;
+			box-sizing: border-box;
+			width: 100%;
+			margin-bottom: 1.8em;
+		}
+	}
+}
+
+@media (min-width: $small-breakpoint) {
+	.notes-score {
+		margin: 0 auto;
+		width: ($small-breakpoint - 32px);
+	}
+}
+
+@media (min-width: $medium-breakpoint) {
+	.notes-score {
+		margin: 0 auto;
+		width: ($medium-breakpoint - 32px);
+	}
+}
+
+@media (min-width: $large-breakpoint) {
+	.notes-score {
+		margin: 0 auto;
+		width: ($large-breakpoint - 32px);
+	}
+}

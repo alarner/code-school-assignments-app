@@ -1,7 +1,8 @@
-angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
-.controller('NavCtrl', function($scope, $state, $rootScope, User) {
+angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp.hotkeys'])
+.controller('NavCtrl', function($scope, $state, $rootScope, User, focus, hotkeys) {
 	$scope.loggedIn = User.isLoggedIn();
 	$scope.grade = false;
+	$scope.showGrade = false;
 	if($scope.loggedIn) {
 		$scope.user = User.get();
 	}
@@ -12,9 +13,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	User.on('logout', function(u) {
 		$scope.loggedIn = false;
 		$state.go('login');
-	});
-	$rootScope.$on('grade', function(e, params) {
-		$scope.grade = params.show;
 	});
 	$scope.logout = function() {
 		User.logout();
@@ -307,12 +305,14 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 	};
 })
-.controller('GradeCtrl', function($scope, $stateParams, $http) {
+.controller('GradeCtrl', function($scope, $rootScope, $stateParams, $http, hotkeys, focus) {
 	console.log($stateParams.assignmentId, $stateParams.submissionId);
 	$scope.error = {
 		generic: ''
 	}
 	$scope.submission = null;
+	$scope.showGrade = false;
+
 	$http.get('/submission/'+$stateParams.submissionId)
 	.success(function(submission) {
 		if(submission.assignment.id != $stateParams.assignmentId) {
@@ -320,9 +320,20 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 		else {
 			$scope.submission = submission;
+			console.log($scope.submission);
 		}
 	})
 	.error(function(err) {
 		$scope.error.generic = err.summary || err;
+	});
+
+	hotkeys.add({
+		combo: 'ctrl+shift+z',
+		description: 'This one goes to 11',
+		allowIn: ['TEXTAREA'],
+		callback: function() {
+			$scope.showGrade = !$scope.showGrade
+			focus('grade-notes');
+		}
 	});
 });

@@ -1,4 +1,4 @@
-angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'])
+angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.directives', 'ui.router'])
 .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 	// $locationProvider.html5Mode(true);
@@ -122,11 +122,8 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'ui.router'
 				event.preventDefault();
 				$state.go(go);
 			}
-			else if(toState.name === 'grade') {
-				$rootScope.$emit('grade', {show: true});
-			}
 			else {
-				$rootScope.$emit('grade', {show: false});
+				$rootScope.bodyClass = 'app-'+toState.name;
 			}
 		}
 	);

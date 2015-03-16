@@ -2,18 +2,14 @@
 
 nav {
 	background-color: #6091BA;
+	height: 3.125em;
+	overflow: visible;
+	position: relative;
+	z-index: 1;
 
 	section {
 		overflow: hidden;
 		margin: 0 1em;
-	}
-
-	.grade-tools {
-		display: none;
-
-		&.show {
-			display: block;
-		}
 	}
 
 	a {
