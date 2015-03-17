@@ -309,16 +309,57 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		}
 	};
 })
-.controller('GradeCtrl', function($scope, $rootScope, $stateParams, $http, hotkeys, focus) {
+.controller('GradeCtrl', function($scope, $rootScope, $stateParams, $http, $state, hotkeys, focus) {
 	function toggleGradeForm() {
 		$scope.showGrade = !$scope.showGrade
 		focus('grade-notes');
 	}
+
+	function setScore(score) {
+		return function() {
+			if(!$scope.notes) {
+				$scope.error.notes = true;
+				focus('grade-notes');
+			}
+			else {
+				$http.post('/grade/submission', {
+					submissionId: $stateParams.submissionId,
+					score: score,
+					notes: $scope.notes
+				})
+				.success(function(data) {
+					var where = { grade: null, assignment: $stateParams.assignmentId };
+					$http.get('/submission?where='+JSON.stringify(where))
+					.success(function(data) {
+						if(data.length) {
+							var submission = data[0];
+							$state.go('grade', {
+								assignmentId: $stateParams.assignmentId,
+								submissionId: submission.id
+							});
+						}
+						else {
+							$state.go('dashboard');
+						}
+					})
+					.error(function(err) {
+						console.log(err);
+					});
+				})
+				.error(function(err) {
+					console.log(err);
+				});
+			}
+		}
+	}
 	$scope.error = {
+		notes: false,
 		generic: ''
 	}
 	$scope.submission = null;
 	$scope.showGrade = false;
+	$scope.notes = '';
+	$scope.setScore = setScore;
 
 	$http.get('/submission/'+$stateParams.submissionId)
 	.success(function(submission) {
@@ -340,8 +381,36 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 
 	hotkeys.add({
 		combo: 'ctrl+shift+z',
-		description: 'This one goes to 11',
-		allowIn: ['TEXTAREA', 'IFRAME'],
+		description: 'Open the grading form.',
+		allowIn: ['TEXTAREA'],
 		callback: toggleGradeForm
+	});
+
+	hotkeys.add({
+		combo: 'ctrl+shift+1',
+		description: 'Sets the score to "DOA"',
+		allowIn: ['TEXTAREA'],
+		callback: setScore(0)
+	});
+
+	hotkeys.add({
+		combo: 'ctrl+shift+2',
+		description: 'Sets the score to "INCOMPLETE"',
+		allowIn: ['TEXTAREA'],
+		callback: setScore(1)
+	});
+
+	hotkeys.add({
+		combo: 'ctrl+shift+3',
+		description: 'Sets the score to "GOOD"',
+		allowIn: ['TEXTAREA'],
+		callback: setScore(2)
+	});
+
+	hotkeys.add({
+		combo: 'ctrl+shift+4',
+		description: 'Sets the score to "GREAT"',
+		allowIn: ['TEXTAREA'],
+		callback: setScore(3)
 	});
 });

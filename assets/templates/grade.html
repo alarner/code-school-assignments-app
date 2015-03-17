@@ -2,13 +2,13 @@
 	<div ng-show="showGrade" class="grade-tools">
 		<div class="notes-score">
 			<div class="notes">
-				<textarea focus-on="grade-notes"></textarea>
+				<textarea focus-on="grade-notes" ng-model="notes" ng-class="error.notes ? 'error' : ''"></textarea>
 			</div>
 			<div class="score">
-				<button class="btn">DOA</button>
-				<button class="btn">INCOMPLETE</button>
-				<button class="btn">GOOD</button>
-				<button class="btn">GREAT</button>
+				<button class="btn" ng-click="setScore(0)()">DOA</button>
+				<button class="btn" ng-click="setScore(1)()">INCOMPLETE</button>
+				<button class="btn" ng-click="setScore(2)()">GOOD</button>
+				<button class="btn" ng-click="setScore(3)()">GREAT</button>
 			</div>
 		</div>
 	</div>

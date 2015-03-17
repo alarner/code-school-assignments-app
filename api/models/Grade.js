@@ -8,9 +8,6 @@
 module.exports = {
 
 	attributes: {
-		submission: {
-			model: 'Submission'
-		},
 		score: {
 			type: 'integer',
 			required: false

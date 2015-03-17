@@ -70,11 +70,11 @@ angular.module('app.services', [])
 				}
 				else {
 					var submission = self.submissions[0];
-					if(!submission.score) {
+					if(!submission.grade) {
 						s = AssignmentStatus.SUBMITTED;
 					}
 					else {
-						switch(submission.score) {
+						switch(submission.grade.score) {
 							case 0:
 								s = AssignmentStatus.DOA;
 							break;
