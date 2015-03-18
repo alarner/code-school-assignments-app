@@ -21,15 +21,77 @@
  * @param {Object}   res
  * @param {Function} next
  */
+var async = require('async');
+var GitHubApi = require("github");
+var github = new GitHubApi({
+	// required
+	version: "3.0.0",
+	// optional
+	debug: true,
+	protocol: "https",
+	// host: "assignments.nutellahabit.com",
+	// pathPrefix: "/api/v3", // for some GHEs
+	timeout: 5000,
+	headers: {
+	    "user-agent": "assignments.nutellahabit.com" // GitHub is happy with a unique user agent
+	}
+});
 module.exports = function (req, res, next) {
-  // Initialize Passport
-  passport.initialize()(req, res, function () {
-    // Use the built-in sessions
-    passport.session()(req, res, function () {
-      // Make the user available throughout the frontend
-      res.locals.user = req.user;
+	// Initialize Passport
+	passport.initialize()(req, res, function () {
+		// Use the built-in sessions
+		passport.session()(req, res, function () {
+			// Make the user available throughout the frontend
+			res.locals.user = req.user;
 
-      next();
-    });
-  });
+			if(!req.user)
+				return next();
+
+			if(req.user.name && req.user.email)
+				return next();
+
+			async.auto({
+				passport: function(cb) {
+					Passport
+					.findOne()
+					.where({user: req.user.id, provider: 'github'})
+					.exec(cb);
+				},
+				auth: ['passport', function(cb, results) {
+					github.authenticate({
+						type: "oauth",
+						token: results.passport.tokens.accessToken
+					});
+					cb();
+				}],
+				user: ['auth', function(cb, results) {
+					github.user.get({}, cb);
+				}],
+				email: ['auth', function(cb, results) {
+					github.user.getEmails({}, cb);
+				}],
+				update: ['user', 'email', function(cb, results) {
+					var primaryEmail = _.findWhere(results.email, {primary: true});
+					primaryEmail = primaryEmail ? primaryEmail.email : null;
+					User.update(
+						{ id: req.user.id },
+						{ name: results.user.name, email: primaryEmail},
+						cb
+					);
+					// console.log(results);
+					// next();
+				}]
+			}, function(err, results) {
+				if(err) {
+					console.log(err);
+				}
+
+				if(results.update.length) {
+					req.user = results.update[0];
+					res.locals.user = req.user;
+				}
+				next();
+			});
+		});
+	});
 };

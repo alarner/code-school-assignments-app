@@ -36,6 +36,10 @@ module.exports.policies = {
 
   GradeController: {
     '*': [ 'passport', 'isInstructor' ]
+  },
+
+  UserController: {
+    '*': [ 'passport', 'isInstructor' ]
   }
 
 

@@ -35,7 +35,8 @@ module.exports.passport = {
     strategy: require('passport-github').Strategy,
     options: {
       clientID: 'aac2ea878e5034b63425',
-      clientSecret: '661996647b9a7b1ef15e8fc5a857472afaf207f5'
+      clientSecret: '661996647b9a7b1ef15e8fc5a857472afaf207f5',
+      scope: ['user:email']
     }
   },
 
