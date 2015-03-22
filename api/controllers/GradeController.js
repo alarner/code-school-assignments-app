@@ -52,7 +52,8 @@ module.exports = {
 		else {
 			Grade.create({
 				score: score,
-				notes: req.body.notes
+				notes: req.body.notes,
+				user: req.user.id
 			}, function(err, grade) {
 				if(err) {
 					res.status(500);
@@ -63,7 +64,6 @@ module.exports = {
 					});
 				}
 				else {
-					console.log(submissionId, grade.id);
 					Submission.update({
 						id: submissionId
 					}, {

@@ -8,6 +8,7 @@
 var validator = require('validator');
 var uuid = require('node-uuid');
 var url = require('url');
+var _ = require('lodash');
 
 module.exports = {
 	create: function(req, res) {
@@ -172,22 +173,64 @@ module.exports = {
 			}
 		})
 	},
+	// Working on being able to pull in the grader
 	mine: function(req, res) {
+		var where = { user: req.user.id, deletedAt: null };
+		if(req.param('assignment')) {
+			where.assignment = parseInt(req.param('assignment'));
+		}
+		var sort = 'createdAt DESC';
+		if(req.param('sort')) {
+			sort = req.param('sort');
+		}
 		Submission
 		.find({
-			where: { user: req.user.id, deletedAt: null },
-			sort: 'createdAt DESC'
+			where: where,
+			sort: sort
 		})
 		.populate('grade')
 		.populate('assignment')
+		.populate('user')
 		.exec(function(err, submissions) {
 			if(err) {
 				res.status(500);
-				res.jsonx(err);
+				return res.jsonx(err);
 			}
-			else {
+
+			if(!submissions.length) {
+				return res.jsonx([]);
+			}
+
+
+			var gradedSubmissions = _.filter(submissions, function(submission) {
+				return submission.grade;
+			});
+			var grades = _.map(gradedSubmissions, function(submission) {
+				return submission.grade;
+			})
+			var userIds = _.pluck(grades, 'user');
+			User
+			.find()
+			.where({id: userIds})
+			.exec(function(err, users) {
+				if(err) {
+					res.status(500);
+					return res.jsonx(err);
+				}
+				users = _.indexBy(users, 'id');
+				_.each(submissions, function(submission) {
+					if(submission.grade) {
+						submission.grade.user = users[submission.grade.user.toString()];
+					}
+				});
 				res.jsonx(submissions);
-			}
+				
+			});
+			
+			// users = _.indexBy(users[0], 'id'); // Only grab userIds that have a grade
+
+			// console.log('users');
+			// console.log(users);
 		});
 	},
 	test : function(req, res) {

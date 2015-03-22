@@ -12,8 +12,12 @@ html, body {
 .danger { color: $danger; }
 .default { color: $default; }
 
+.error { color: $danger; }
+
 a {
 	cursor: pointer;
+	color: #6091ba;
+	text-decoration: none;
 }
 
 main {

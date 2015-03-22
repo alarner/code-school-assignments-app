@@ -4,6 +4,15 @@
 	padding: 2em;
 	max-width: 660px;
 
+	.loading {
+		&:before {
+			content: url(/images/ajax-loader.gif);
+			position: relative;
+			top: 6px;
+			padding-right: 5px;
+		}
+	}
+
 	h1 {
 		font-size: 22px;
 		font-weight: 300;

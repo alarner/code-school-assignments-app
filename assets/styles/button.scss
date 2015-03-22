@@ -1,10 +1,23 @@
 .btn {
 	border: 0;
 	background: #6091ba;
-	padding: 6px 12px;
+	padding: 0.375em 0.75em;
 	color: #fff;
 	text-decoration: none;
 	cursor: pointer;
+	box-sizing: border-box;
+	display: inline-block;
+
+	&.full-width {
+		width: 100%;
+		text-align: center;
+	}
+
+	&.lg {
+		font-size: 1.5em;
+		font-weight: bold;
+		padding: 0.75em 1.5em;
+	}
 
 	&:hover {
 		background: #84aac9;

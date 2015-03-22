@@ -43,7 +43,7 @@ angular.module('app.services', [])
 		}
 	};
 })
-.factory('Assignment', function(AssignmentStatus) {
+.factory('Assignment', function(AssignmentStatus, Grade) {
 	return {
 		AssignmentModel: function(assignment, submissions) {
 			var self = this;
@@ -56,6 +56,12 @@ angular.module('app.services', [])
 			this.attributes.dueAt = moment(this.attributes.dueAt);
 			this.attributes.createdAt = moment(this.attributes.createdAt);
 			this.attributes.updatedAt = moment(this.attributes.updatedAt);
+
+			_.each(this.submissions, function(submission) {
+				if(submission.grade) {
+					submission.grade = new Grade.GradeModel(submission.grade);
+				}
+			})
 
 			// Output can be 'cssClass', 'name', or 'color'
 			this.status = function(output) {
@@ -74,23 +80,7 @@ angular.module('app.services', [])
 						s = AssignmentStatus.SUBMITTED;
 					}
 					else {
-						switch(submission.grade.score) {
-							case 0:
-								s = AssignmentStatus.DOA;
-							break;
-							case 1:
-								s = AssignmentStatus.INCOMPLETE;
-							break;
-							case 2:
-								s = AssignmentStatus.GOOD;
-							break;
-							case 3:
-								s = AssignmentStatus.GREAT;
-							break;
-							default:
-								s = AssignmentStatus.UNKNOWN;
-							break;
-						}
+						return submission.grade.convert(output);
 					}
 				}
 
@@ -145,6 +135,38 @@ angular.module('app.services', [])
 			});
 		}
 	};
+})
+.factory('Grade', function(AssignmentStatus) {
+	return {
+		GradeModel: function(grade) {
+			for(var i in grade) {
+				this[i] = grade[i];
+			}
+			var self = this;
+			this.convert = function(output) {
+				var s = AssignmentStatus.UNKNOWN;
+				switch(self.score) {
+					case 0:
+						s = AssignmentStatus.DOA;
+					break;
+					case 1:
+						s = AssignmentStatus.INCOMPLETE;
+					break;
+					case 2:
+						s = AssignmentStatus.GOOD;
+					break;
+					case 3:
+						s = AssignmentStatus.GREAT;
+					break;
+					default:
+						s = AssignmentStatus.UNKNOWN;
+					break;
+				}
+
+				return s[output];
+			}
+		}
+	}
 })
 .factory('User', function($http) {
 	var user = {};

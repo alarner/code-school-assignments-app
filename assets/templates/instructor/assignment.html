@@ -1,0 +1,34 @@
+<section class="view-assignment">
+	<p class="error" ng-show="error.generic" ng-bind="error.generic"></p>
+	<div ng-show="assignment">
+		<h1>{{ assignment.attributes.name }}</h1>
+		<div><a ng-href="{{ assignment.attributes.url }}">Instructions</a> | Due on: {{ assignment.attributes.dueAt.toDate() | date : 'fullDate' }}</div>
+		<div ng-show="assignment.distSubdir">
+			<div>Required Files:</div>
+			<ul>
+				<li>{{ assignment.attributes.distSubdir }}/index.html</li>
+			</ul>
+		</div>
+		<h2>Submissions</h2>
+		<div ng-show="assignment.submissions.length">
+			<div ng-repeat="submission in assignment.submissions">
+				<div class="submission-row">
+					<img ng-src="{{ submission.user.avatar }}" class="avatar">
+					<div class="content">
+						<h4><a href="#">Submission Link</a> | <a href="#">Live Link</a></h4>
+						<div ng-bind="submission.notes"></div>
+						<div class="date">{{ submission.createdAt | date : 'fullDate' }}</div>
+					</div>
+				</div>
+				<div class="submission-row" ng-if="submission.grade">
+					<img ng-src="{{ submission.grade.user.avatar }}" class="avatar">
+					<div class="content">
+						<h4>Grade: <span ng-class="submission.grade.convert('color')">{{ submission.grade.convert('name') }}</span></h4>
+						<div ng-bind="submission.grade.notes" class="notes"></div>
+						<div class="date">{{ submission.grade.createdAt | date : 'fullDate' }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

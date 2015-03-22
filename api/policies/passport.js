@@ -27,7 +27,7 @@ var github = new GitHubApi({
 	// required
 	version: "3.0.0",
 	// optional
-	debug: true,
+	debug: false,
 	protocol: "https",
 	// host: "assignments.nutellahabit.com",
 	// pathPrefix: "/api/v3", // for some GHEs
@@ -75,7 +75,11 @@ module.exports = function (req, res, next) {
 					primaryEmail = primaryEmail ? primaryEmail.email : null;
 					User.update(
 						{ id: req.user.id },
-						{ name: results.user.name, email: primaryEmail},
+						{
+							name: results.user.name || results.user.login,
+							email: primaryEmail,
+							avatar: results.user.avatar_url
+						},
 						cb
 					);
 					// console.log(results);
@@ -85,8 +89,7 @@ module.exports = function (req, res, next) {
 				if(err) {
 					console.log(err);
 				}
-
-				if(results.update.length) {
+				else if(results.update && results.update.length) {
 					req.user = results.update[0];
 					res.locals.user = req.user;
 				}

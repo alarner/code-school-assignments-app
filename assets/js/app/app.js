@@ -9,15 +9,15 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		templateUrl: 'templates/login.html',
 		controller: 'LoginCtrl'
 	})
-	.state('register', {
-		url: '/user/register',
-		templateUrl: 'templates/register.html',
-		controller: 'RegisterCtrl'
+	.state('student-dashboard', {
+		url: '/student/dashboard',
+		templateUrl: 'templates/student/dashboard.html',
+		controller: 'StudentDashboardCtrl'
 	})
-	.state('dashboard', {
-		url: '/dashboard',
-		templateUrl: 'templates/dashboard.html',
-		controller: 'DashboardCtrl'
+	.state('instructor-dashboard', {
+		url: '/instructor/dashboard',
+		templateUrl: 'templates/instructor/dashboard.html',
+		controller: 'InstructorDashboardCtrl'
 	})
 	.state('create-assignment', {
 		url: '/instructor/assignment/create',
@@ -25,18 +25,23 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		controller: 'CreateAssignmentCtrl'
 	})
 	.state('edit-assignment', {
-		url: '/instructor/assignment/edit/:id',
+		url: '/instructor/assignment/:id/edit',
 		templateUrl: 'templates/edit-assignment.html',
 		controller: 'EditAssignmentCtrl'
 	})
-	.state('assignment', {
-		url: '/assignment/:id',
-		templateUrl: 'templates/assignment.html',
-		controller: 'AssignmentCtrl'
+	.state('student-assignment', {
+		url: '/student/assignment/:id',
+		templateUrl: 'templates/student/assignment.html',
+		controller: 'StudentAssignmentCtrl'
+	})
+	.state('instructor-assignment', {
+		url: '/instructor/assignment/:id',
+		templateUrl: 'templates/instructor/assignment.html',
+		controller: 'InstructorAssignmentCtrl'
 	})
 	.state('submit', {
-		url: '/assignment/:id/submit',
-		templateUrl: 'templates/submit.html',
+		url: '/student/assignment/:id/submit',
+		templateUrl: 'templates/student/submit.html',
 		controller: 'SubmitCtrl'
 	})
 	.state('grade', {
@@ -58,15 +63,15 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		visibleLoggedOut: true,
 		requiresType: []
 	},
-	'register': {
-		visibleLoggedIn: false,
-		visibleLoggedOut: true,
-		requiresType: []
-	},
-	'dashboard': {
+	'student-dashboard': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
-		requiresType: []
+		requiresType: [1]
+	},
+	'instructor-dashboard': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
 	},
 	'create-assignment': {
 		visibleLoggedIn: true,
@@ -78,10 +83,15 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		visibleLoggedOut: false,
 		requiresType: [2]
 	},
-	'assignment': {
+	'student-assignment': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
-		requiresType: []
+		requiresType: [1]
+	},
+	'instructor-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
 	},
 	'permission-denied': {
 		visibleLoggedIn: true,
@@ -106,7 +116,12 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		function(event, toState, toParams, fromState, fromParams){
 			var go = null;
 			if(User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedIn) {
-				go = 'dashboard';
+				if(User.isStudent()) {
+					go = 'student-dashboard';
+				}
+				else if(User.isInstructor()) {
+					go = 'instructor-dashboard';
+				}
 			}
 			else if(!User.isLoggedIn() && !stateSettings[toState.name].visibleLoggedOut) {
 				go = 'login';

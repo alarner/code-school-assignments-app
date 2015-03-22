@@ -16,6 +16,9 @@ module.exports = {
 			type: 'text',
 			required: true
 		},
+		user: {
+			model: 'User'
+		},
 		deletedAt: {
 			type: 'datetime',
 			required: false
