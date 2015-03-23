@@ -45,7 +45,7 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		controller: 'SubmitCtrl'
 	})
 	.state('grade', {
-		url: '/grade/:assignmentId/:submissionId',
+		url: '/instructor/grade/:assignmentId/:submissionId',
 		templateUrl: 'templates/grade.html',
 		controller: 'GradeCtrl'
 	})

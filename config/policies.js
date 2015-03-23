@@ -23,7 +23,8 @@ module.exports.policies = {
 
   AssignmentController: {
     '*': [ 'passport', 'isLoggedIn' ],
-    create: ['passport', 'isInstructor']
+    create: ['passport', 'isInstructor'],
+    summary: ['passport', 'isInstructor']
   },
 
   SubmissionController: {

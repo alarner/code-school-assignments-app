@@ -9,11 +9,11 @@
 		<h1>{{ week.start.toDate() | date : 'MMM. d'}} - {{ week.end.toDate() | date : 'MMM. d'}}</h1>
 		<div class="assignments">
 			<div class="a" ng-repeat="assignment in week.assignments">
-				<a class="datetime" ui-sref="assignment({id: assignment.attributes.id})">
+				<a class="datetime" ui-sref="instructor-assignment({id: assignment.attributes.id})">
 					<div>{{ assignment.attributes.dueAt.toDate() | date : 'EEEE'}}</div>
 					<div class="time">{{ assignment.attributes.dueAt.toDate() | date : 'h:mm a'}}</div>
 				</a>
-				<a ui-sref="assignment({id: assignment.attributes.id})">
+				<a ui-sref="instructor-assignment({id: assignment.attributes.id})">
 					<div ng-bind="assignment.attributes.name"></div>
 				</a>
 

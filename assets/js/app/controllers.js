@@ -265,6 +265,49 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		console.log($scope.assignment);
 	});
 })
+.controller('InstructorAssignmentCtrl', function($scope, $stateParams, $http, Assignment) {
+	$scope.error = {
+		generic: ''
+	};
+	$scope.students = [];
+
+	if(!$stateParams.id) {
+		$scope.error.generic = 'Unknown assignment';
+	}
+	else {
+		async.parallel({
+			students: function(cb) {
+				$http.get('/assignment/summary/'+$stateParams.id)
+				.success(function(students) {
+					cb(null, students);
+				})
+				.error(function(err) {
+					cb(err);
+				})
+			},
+			assignment: function(cb) {
+				$http.get('/assignment/'+$stateParams.id)
+				.success(function(assignment) {
+					cb(null, assignment);
+				})
+				.error(function(err) {
+					cb(err);
+				})
+			}
+		}, function(err, results) {
+			if(err) return $scope.error.generic = err.summary || err;
+			$scope.assignment = results.assignment;
+			_.each(results.students, function(student) {
+				student.assignment = new Assignment.AssignmentModel(
+					results.assignment,
+					student.submissions
+				);
+			})
+			$scope.students = results.students;
+		})
+		
+	}
+})
 .controller('SubmitCtrl', function($scope, $state, $stateParams, $http, Validate) {
 	$scope.error = {
 		url: '',
