@@ -53,6 +53,20 @@
 				}
 			}
 
+			.progress {
+				float: left;
+				width: 100%;
+				margin-top: 1em;
+
+				.label {
+					font-size: 0.8em;
+				}
+
+				progress {
+					width: 100%;
+				}
+			}
+
 			.datetime {
 				display: block;
 				margin-right: 1em;

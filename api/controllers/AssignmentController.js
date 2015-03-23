@@ -27,7 +27,7 @@ module.exports = {
 			students: function(cb) {
 				User
 				.find()
-				.where({type: UserType.STUDENT})
+				.where({type: UserType.STUDENT, deletedAt: null})
 				.exec(cb)
 			},
 			submissions: function(cb) {

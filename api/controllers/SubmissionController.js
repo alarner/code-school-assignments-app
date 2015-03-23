@@ -233,8 +233,20 @@ module.exports = {
 			// console.log(users);
 		});
 	},
-	test : function(req, res) {
-		console.log(s3);
+	findAll : function(req, res) {
+		Submission
+		.find()
+		.populate('assignment')
+		.populate('grade')
+		.populate('user')
+		.sort('createdAt ASC')
+		.exec(function(err, submissions) {
+			if(err) {
+				res.status(500);
+				return res.jsonx(err);
+			}
+			res.jsonx(submissions);
+		});
 	}
 };
 

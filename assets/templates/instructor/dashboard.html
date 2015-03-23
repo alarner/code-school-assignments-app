@@ -28,6 +28,14 @@
 					</a>
 
 				</div>
+				<div class="progress">
+					<div class="label">On Time Submissions:</div>
+					<progress max="{{numStudents}}" value="{{assignment.attributes.onTimeCount}}"></progress>
+				</div>
+				<div class="progress">
+					<div class="label">Completed Submissions:</div>
+					<progress max="{{numStudents}}" value="{{assignment.attributes.completedCount}}"></progress>
+				</div>
 			</div>
 		</div>
 	</div>

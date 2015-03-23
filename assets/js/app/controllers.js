@@ -29,7 +29,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		generic: ''
 	};
 })
-.controller('InstructorDashboardCtrl', function($scope, $http, $state, User, Assignment) {
+.controller('InstructorDashboardCtrl', function($scope, $http, $state, User, Assignment, AssignmentStatus) {
 	$scope.error = {
 		generic: ''
 	};
@@ -38,7 +38,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 	$scope.user = User;
 	$scope.loading = true;
 
-	var originalSubmissions = [];
+	var ungradedSubmissions = [];
 
 	async.parallel( {
 		assignments: function(cb) {
@@ -52,31 +52,79 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		},
 		submissions: function(cb) {
 			var where = { grade: null };
-			$http.get('/submission?where='+JSON.stringify(where))
+			$http.get('/submission/findAll')
 			.success(function(submissions) {
-				originalSubmissions = submissions;
+				ungradedSubmissions = _.filter(submissions, function(submission) {
+					if(submission.grade) return false;
+					if(submission.deletedAt) return false;
+					return true;
+				});
 				cb(null, submissions);
 			})
 			.error(function(err) {
 				cb(err);
 			});
+		},
+		count: function(cb) {
+			$http.get('/student/count')
+			.success(function(result) {
+				cb(null, result.count);
+			})
+			.error(function(err) {
+				cb(err);
+			})
 		}
 	}, function(err, results) {
 		if(err) {
 			return $scope.error.generic = err;
 		}
-		var assignments = Assignment.createList(results.assignments, results.submissions);
-		$scope.loading = false;
+		var groupedSubmissions = _.groupBy(results.submissions, function(submission) {
+			return submission.assignment.id;
+		});
+		var assignments = Assignment.createList(results.assignments, ungradedSubmissions);
+		_.each(assignments, function(assignment) {
+			var submissions = [];
+			var assignmentId = assignment.attributes.id.toString();
+			if(groupedSubmissions.hasOwnProperty(assignmentId)) {
+				submissions = groupedSubmissions[assignmentId];
+			}
+
+			// Calculate "on time" stats.
+			var onTimeSubmissions = _.filter(submissions, function(submission) {
+				return (submission.createdAt < submission.assignment.dueAt);
+			});
+
+			var groupedOnTimeSubmissions = _.groupBy(onTimeSubmissions, function(submission) {
+				return submission.user.id;
+			});
+
+			assignment.attributes.onTimeCount = _.keys(groupedOnTimeSubmissions).length;
+
+			// Calculate "completed" stats.
+			var completedSubmissions = _.filter(submissions, function(submission) {
+				if(!submission.grade) return false;
+				if(submission.grade.score < 2) return false;
+				return true;
+			});
+
+			var groupedCompletedSubmissions = _.groupBy(completedSubmissions, function(submission) {
+				return submission.user.id;
+			});
+
+			assignment.attributes.completedCount = _.keys(groupedCompletedSubmissions).length;
+		});
 		$scope.assignments = Assignment.groupListByWeek(assignments);
+		$scope.loading = false;
+		$scope.numStudents = results.count;
 	});
 
 	$scope.grade = function(assignmentId) {
-		for(var i=0; i<originalSubmissions.length; i++) {
-			var assignment = originalSubmissions[i].assignment;
+		for(var i=0; i<ungradedSubmissions.length; i++) {
+			var assignment = ungradedSubmissions[i].assignment;
 			if(assignment.id === assignmentId) {
 				$state.go('grade', {
 					assignmentId: assignmentId,
-					submissionId: originalSubmissions[i].id
+					submissionId: ungradedSubmissions[i].id
 				});
 				break;
 			}
@@ -261,8 +309,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		}
 		var assignments = Assignment.createList([results.assignment], results.submissions);
 		$scope.assignment = assignments[0];
-		console.log('$scope.assignment');
-		console.log($scope.assignment);
 	});
 })
 .controller('InstructorAssignmentCtrl', function($scope, $stateParams, $http, Assignment) {
@@ -413,7 +459,6 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		}
 		else {
 			$scope.submission = submission;
-			console.log($scope.submission);
 		}
 	})
 	.error(function(err) {
