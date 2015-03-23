@@ -57,9 +57,9 @@
 NAME="Assignments"
 NODE_BIN_DIR="/usr/local/bin"
 NODE_PATH="/usr/local/lib/node_modules"
-APPLICATION_PATH="/usr/share/nginx/www/assignments/app.js"
-PIDFILE="/home/ubuntu/assignments/assignments.pid"
-LOG="/home/ubuntu/assignments/assignments-forever.log"
+APPLICATION_PATH="/usr/share/nginx/www/assignments.nutellahabit.com/app.js"
+PIDFILE="/home/ubuntu/assignments.nutellahabit.com/assignments.nutellahabit.com.pid"
+LOG="/home/ubuntu/assignments.nutellahabit.com/assignments.nutellahabit.com-forever.log"
 MIN_UPTIME="5000"
 SPIN_SLEEP_TIME="2000"
  
