@@ -1,3 +1,3 @@
 # An assignments app to help with grading front-end development assignments
 
-<iframe src="https://player.vimeo.com/video/123043554" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/123043554">Assignment App</a> from <a href="https://vimeo.com/user38644181">Aaron Larner</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+[Screencast of the app in use](https://vimeo.com/123043554)
