@@ -49,6 +49,11 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		templateUrl: 'templates/grade.html',
 		controller: 'GradeCtrl'
 	})
+	.state('view-student', {
+		url: '/instructor/view-student/:id',
+		templateUrl: 'templates/instructor/view-student.html',
+		controller: 'ViewStudentCtrl'
+	})
 	.state('permission-denied', {
 		url: '/permission-denied',
 		templateUrl: 'templates/permission-denied.html',
@@ -89,6 +94,11 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		requiresType: [1]
 	},
 	'instructor-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'view-student': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
 		requiresType: [2]

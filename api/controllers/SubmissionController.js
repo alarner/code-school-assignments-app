@@ -9,6 +9,7 @@ var validator = require('validator');
 var uuid = require('node-uuid');
 var url = require('url');
 var _ = require('lodash');
+var UserType = require('../constants/UserType');
 
 module.exports = {
 	create: function(req, res) {
@@ -178,6 +179,9 @@ module.exports = {
 		var where = { user: req.user.id, deletedAt: null };
 		if(req.param('assignment')) {
 			where.assignment = parseInt(req.param('assignment'));
+		}
+		if(req.param('userId') && req.user.type === UserType.INSTRUCTOR) {
+			where.user = req.param('userId');
 		}
 		var sort = 'createdAt DESC';
 		if(req.param('sort')) {

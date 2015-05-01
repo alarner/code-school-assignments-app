@@ -503,4 +503,40 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		allowIn: ['TEXTAREA'],
 		callback: setScore(3)
 	});
+})
+.controller('ViewStudentCtrl', function($scope, $http, $stateParams, Assignment) {
+	$scope.error = {
+		generic: ''
+	};
+	$scope.loaded = '';
+	$scope.assignments = [];
+	$scope.loading = true;
+
+	async.parallel( {
+		assignments: function(cb) {
+			$http.get('/assignment?sort=dueAt DESC')
+			.success(function(assignments) {
+				cb(null, assignments);
+			})
+			.error(function(err) {
+				cb(err);
+			});
+		},
+		submissions: function(cb) {
+			$http.get('/submission/mine?userId='+$stateParams.id)
+			.success(function(submissions) {
+				cb(null, submissions);
+			})
+			.error(function(err) {
+				cb(err);
+			});
+		}
+	}, function(err, results) {
+		if(err) {
+			return $scope.error.generic = err;
+		}
+		var assignments = Assignment.createList(results.assignments, results.submissions);
+		$scope.loading = false;
+		$scope.assignments = Assignment.groupListByWeek(assignments);
+	});
 });

@@ -31,7 +31,7 @@ module.exports.policies = {
     '*': [ 'passport', 'isLoggedIn' ],
     create: ['passport', 'isStudent'],
     find: ['passport', 'isInstructor'],
-    mine: ['passport', 'isStudent'],
+    mine: ['passport', 'isLoggedIn'],
     findAll: ['passport', 'isInstructor']
   },
 

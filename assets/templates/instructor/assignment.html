@@ -14,7 +14,7 @@
 			<div ng-repeat="student in students">
 				<div class="submission-row">
 					<div class="user">
-						<img ng-src="{{ student.avatar }}" class="avatar">
+						<img ng-src="{{ student.avatar }}" class="avatar" ui-sref="view-student({id: student.id})">
 						<div class="name" ng-bind="student.name"></div>
 					</div>
 					<div class="content">

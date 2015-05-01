@@ -67,7 +67,6 @@ angular.module('app.services', [])
 			this.status = function(output) {
 				var s = null;
 				if(!self.submissions.length) {
-					console.log(self.attributes.dueAt.toDate(), new Date());
 					if(self.attributes.dueAt.toDate() < new Date()) {
 						s = AssignmentStatus.LATE;
 					}
