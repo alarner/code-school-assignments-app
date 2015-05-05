@@ -31,14 +31,40 @@
 	z-index: 1;
 	top: 3.125em;;
 
-	.notes-score {
+	.notes-score-student {
 		overflow: hidden;
 		position: relative;
 	}
 
-	.notes {
+	.student {
+		background: #fff;
+		padding: 1em;
+		margin-bottom: 1em;
+		height: 5em;
+		position: relative;
+
+		.avatar {
+			float: left;
+			width: 6em;
+			margin-right: 1em;
+
+			img {
+				width: 4em;
+			}
+
+			.name {
+				font-size: 11px;
+			}
+		}
+
+		.link-summary {
+			
+		}
+	}
+
+	.notes-student {
 		textarea {
-			height: 14em;
+			height: 6em;
 			width: 100%;
 			box-sizing: border-box;
 			margin: 0;
@@ -69,21 +95,21 @@
 }
 
 @media (min-width: $small-breakpoint) {
-	.notes-score {
+	.notes-score-student {
 		margin: 0 auto;
 		width: ($small-breakpoint - 32px);
 	}
 }
 
 @media (min-width: $medium-breakpoint) {
-	.notes-score {
+	.notes-score-student {
 		margin: 0 auto;
 		width: ($medium-breakpoint - 32px);
 	}
 }
 
 @media (min-width: $large-breakpoint) {
-	.notes-score {
+	.notes-score-student {
 		margin: 0 auto;
 		width: ($large-breakpoint - 32px);
 	}

@@ -1,7 +1,15 @@
 <section>
 	<div ng-show="showGrade" class="grade-tools">
-		<div class="notes-score">
-			<div class="notes">
+		<div class="notes-score-student">
+			<div class="notes-student">
+				<div class="student">
+					<div class="avatar">
+						<img ng-src="{{submission.user.avatar}}">
+						<div class="name" ng-bind="submission.user.name"></div>
+					</div>
+					<div class="link-summary" ng-bind="submission.notes">
+					</div>
+				</div>
 				<textarea focus-on="grade-notes" ng-model="notes" ng-class="error.notes ? 'error' : ''"></textarea>
 			</div>
 			<div class="score">
