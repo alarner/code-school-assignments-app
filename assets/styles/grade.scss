@@ -29,7 +29,13 @@
 	margin: 0;
 	position: absolute;
 	z-index: 1;
-	top: 3.125em;;
+	top: 3.125em;
+
+	.submission-date {
+		color: #333;
+		font-size: 11px;
+		padding-left: 3em;
+	}
 
 	.notes-score-student {
 		overflow: hidden;

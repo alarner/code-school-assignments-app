@@ -7,7 +7,13 @@
 						<img ng-src="{{submission.user.avatar}}">
 						<div class="name" ng-bind="submission.user.name"></div>
 					</div>
-					<div class="link-summary" ng-bind="submission.notes">
+					<div class="link-summary">
+						<div>
+							<a ng-href="{{submission.url}}" target="_blank">Submission Link</a>
+							<span class="submission-date" ng-bind="submission.createdAt | date : 'short'"></span>
+						</div>
+						<div ng-bind="submission.notes">
+						</div>
 					</div>
 				</div>
 				<textarea focus-on="grade-notes" ng-model="notes" ng-class="error.notes ? 'error' : ''"></textarea>
