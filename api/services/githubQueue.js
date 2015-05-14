@@ -121,7 +121,7 @@ queue.process('github', function(job, done){
 					Body: fs.createReadStream(fpath)
 				}, function(err, data) {
 					if(err) {
-						job.log('Error uploading %s', task.key);
+						job.log('Error uploading %s %s', task.key, err);
 					}
 					else {
 						job.log('Finished uploading %s', task.key);
