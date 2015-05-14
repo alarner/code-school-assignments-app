@@ -89,8 +89,9 @@ async.auto({
 					' [assignment='+results.assignment.id+
 					', submission='+results.submission.id+']',
 			target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
-			bucket: 'assignments',
-			assignment: results.assignment
+			bucket: 'assignment-submissions',
+			assignment: results.assignment,
+			submission: results.submission
 		}).save(cb);
 	}]
 

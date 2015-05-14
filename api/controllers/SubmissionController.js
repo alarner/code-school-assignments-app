@@ -251,6 +251,9 @@ module.exports = {
 			}
 			res.jsonx(submissions);
 		});
+	},
+	view: function(req, res) {
+		
 	}
 };
 
