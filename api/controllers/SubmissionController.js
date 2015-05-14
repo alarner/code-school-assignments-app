@@ -154,7 +154,7 @@ module.exports = {
 					});
 				}
 
-				githubQueue.create('github', {
+				githubQueue.queue.create('github', {
 					title: 'GitHub download for '+
 							req.user.firstName+' '+req.user.lastName+
 							' [assignment='+data.assignment+

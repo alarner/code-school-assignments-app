@@ -33,10 +33,6 @@ var progress = {
 	FINISH_ALL: 13
 };
 
-// Start up the GUI
-kue.app.listen(3000);
-kue.app.set('title', 'Iron Assignments Queue');
-
 
 // job = {
 // 	target: 'http://github.com/alarner/test',
@@ -169,4 +165,11 @@ queue.process('github', function(job, done){
 	});
 });
 
-module.exports = queue;
+module.exports = {
+	init: function() {
+		// Start up the GUI
+		kue.app.listen(3000);
+		kue.app.set('title', 'Iron Assignments Queue');
+	},
+	queue: queue
+};

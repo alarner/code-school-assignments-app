@@ -83,7 +83,7 @@ async.auto({
 	download: ['submission', 'assignment', 'user', function(cb, results) {
 		var parsedUrl = url.parse(results.submission.url);
 		var pieces = _.filter(parsedUrl.pathname.split('/'), function(s) { return s; });
-		githubQueue.create('github', {
+		githubQueue.queue.create('github', {
 			title: 'GitHub download for '+
 					results.user.firstName+' '+results.user.lastName+
 					' [assignment='+results.assignment.id+
