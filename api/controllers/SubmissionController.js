@@ -136,7 +136,7 @@ module.exports = {
 
 				});
 			}],
-			download: ['update', 'assignment', function(cb, results) {
+			download: ['update', 'assignment', 'create', function(cb, results) {
 				if(!results.update.location) return cb();
 				var parsedUrl = url.parse(data.url);
 				if(!parsedUrl.pathname) {
@@ -161,8 +161,9 @@ module.exports = {
 							' [assignment='+data.assignment+
 							', submission='+results.update.id+']',
 					target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
-					bucket: results.bucket.Bucket,
-					assignment: results.assignment
+					bucket: sails.config.aws.s3.bucket,
+					assignment: results.assignment,
+					submission: results.create
 				}).save(cb);
 			}]
 		}, function(err, result) {
