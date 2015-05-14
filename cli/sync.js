@@ -101,6 +101,7 @@ async.auto({
 	}
 	console.log('yeah!');
 	console.log(results);
+	process.exit(0);
 });
 
 // sequelize.query(
