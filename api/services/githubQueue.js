@@ -7,11 +7,14 @@ var fs = require('fs-extra');
 var recursive = require('recursive-readdir');
 var unzip = require('unzip');
 var uuid = require('node-uuid');
+var config = require('../../config/redis');
+var _ = require('lodash');
+var s3 = require('./s3');
 var queue = kue.createQueue({
 	prefix: 'github',
 	redis: {
-		port: sails.config.redis.port,
-		host: sails.config.redis.host
+		port: config.redis.port,
+		host: config.redis.host
 	}
 });
 var progress = {

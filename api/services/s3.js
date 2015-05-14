@@ -1,6 +1,7 @@
 var AWS = require('aws-sdk');
-AWS.config.update(sails.config.aws);
-module.exports = new AWS.S3(sails.config.aws.s3);
+var config = require('../../config/local.js')
+AWS.config.update(config.aws);
+module.exports = new AWS.S3(config.aws.s3);
 // module.exports = {
 // 	locales: {},
 // 	get: function(key, locale) {
