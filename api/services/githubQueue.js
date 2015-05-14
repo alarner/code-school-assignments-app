@@ -113,6 +113,7 @@ queue.process('github', function(job, done){
 			var uploadQueue = async.queue(function(task, cb) {
 				job.log('Start uploading %s', task.key);
 				var fpath = path.join(results.unzip, task.path);
+				job.log('Start uploading %s', JSON.stringify(job.data.submission));
 				s3.putObject({
 					Bucket: job.data.bucket,
 					Key: path.join(job.data.submission.id.toString(), task.key),
