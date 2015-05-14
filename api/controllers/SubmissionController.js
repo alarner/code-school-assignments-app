@@ -84,45 +84,46 @@ module.exports = {
 				.exec(cb);
 			},
 			// Create a new aws bucket to store the submission data
-			bucket: ['create', 'assignment', function(cb, results) {
-				var parsedUrl = url.parse(data.url);
-				if(parsedUrl.host.toLowerCase() != 'github.com') return cb(null, false);
-				if(!results.assignment.distSubdir) return cb(null, false);
-				console.log('bucket');
-				var createBucket = function(cb) {
-					var bucket = uuid.v4();
-					s3.createBucket({
-						Bucket: bucket,
-						ACL: 'public-read',
+			// bucket: ['create', 'assignment', function(cb, results) {
+			// 	var parsedUrl = url.parse(data.url);
+			// 	if(parsedUrl.host.toLowerCase() != 'github.com') return cb(null, false);
+			// 	if(!results.assignment.distSubdir) return cb(null, false);
+			// 	console.log('bucket');
+			// 	var createBucket = function(cb) {
+			// 		var bucket = uuid.v4();
+			// 		s3.createBucket({
+			// 			Bucket: bucket,
+			// 			ACL: 'public-read',
 
-					}, function(err, data) {
-						if(err) {
-							switch(err.code) {
-								case 'BucketAlreadyOwnedByYou':
-								case 'BucketAlreadyExists':
-									createBucket(cb);
-								break;
-								default:
-									cb(err);
-								break;
-							}
-						}
-						else {
-							data.Bucket = bucket;
-							cb(null, data);
-						}
-					});
-				};
+			// 		}, function(err, data) {
+			// 			if(err) {
+			// 				switch(err.code) {
+			// 					case 'BucketAlreadyOwnedByYou':
+			// 					case 'BucketAlreadyExists':
+			// 						createBucket(cb);
+			// 					break;
+			// 					default:
+			// 						cb(err);
+			// 					break;
+			// 				}
+			// 			}
+			// 			else {
+			// 				data.Bucket = bucket;
+			// 				cb(null, data);
+			// 			}
+			// 		});
+			// 	};
 
-				createBucket(cb);
-			}],
-			update: ['create', 'bucket', function(cb, results) {
-				if(!results.bucket) return cb(null, results.create);
+			// 	createBucket(cb);
+			// }],
+			update: ['create', function(cb, results) {
+				// if(!results.bucket) return cb(null, results.create);
 				console.log('update');
 				Submission.update({
 					id: results.create.id
 				}, {
-					location: results.bucket.Location
+					// location: results.bucket.Location
+					location: 'N/A'
 				}, function(err, results) {
 					if(err) return cb(err);
 					if(!results.length) {
