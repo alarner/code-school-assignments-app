@@ -58,8 +58,8 @@ server {
 	gzip_vary		on;
 	gzip_types		text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
-	access_log /var/log/nginx/*.assignments.nutellahabit.com/access.log;
-	error_log /var/log/nginx/*.assignments.nutellahabit.com/error.log;
+	access_log /var/log/nginx/s.assignments.nutellahabit.com/access.log;
+	error_log /var/log/nginx/s.assignments.nutellahabit.com/error.log;
 
 	location / {
 		proxy_pass			http://127.0.0.1:1337/submission/view;
