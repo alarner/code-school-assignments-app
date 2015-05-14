@@ -32,7 +32,8 @@ module.exports.policies = {
     create: ['passport', 'isStudent'],
     find: ['passport', 'isInstructor'],
     mine: ['passport', 'isLoggedIn'],
-    findAll: ['passport', 'isInstructor']
+    findAll: ['passport', 'isInstructor'],
+    view: [ 'passport' ]
   },
 
   GradeController: {

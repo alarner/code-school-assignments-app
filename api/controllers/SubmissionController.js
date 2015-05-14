@@ -10,6 +10,7 @@ var uuid = require('node-uuid');
 var url = require('url');
 var _ = require('lodash');
 var UserType = require('../constants/UserType');
+var path = require('path');
 
 module.exports = {
 	create: function(req, res) {
@@ -253,7 +254,30 @@ module.exports = {
 		});
 	},
 	view: function(req, res) {
-		
+		console.log(req.host);
+		console.log()
+		if(req.host.substring(0, 2) != 's-') {
+			res.notFound();
+		}
+		var pieces = req.host.split('.');
+		var prefix = pieces[0].split('-');
+		var submissionId = pieces[1];
+
+		var key = path.join(pieces[1], '/', req.path.substr(16));
+
+		var params = {Bucket: sails.config.aws.s3.bucket, Key: key};
+		// var file = require('fs').createWriteStream('/path/to/file.jpg');
+		s3.getObject(params)
+		.createReadStream()
+		.on('error', function(err) {
+			if(err.code === 'NoSuchKey') {
+				res.notFound();
+			}
+			else {
+				res.serverError(err);
+			}
+		})
+		.pipe(res);
 	}
 };
 

@@ -89,7 +89,7 @@ async.auto({
 					' [assignment='+results.assignment.id+
 					', submission='+results.submission.id+']',
 			target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
-			bucket: 'assignment-submissions',
+			bucket: config.aws.s3.bucket,
 			assignment: results.assignment,
 			submission: results.submission
 		}).save(cb);
