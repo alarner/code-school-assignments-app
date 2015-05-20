@@ -32,7 +32,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'get /submission/view/*': 'SubmissionController.view',
+  'get /submission/view*': 'SubmissionController.view',
 
   'get /': 'HomepageController.index',
 
