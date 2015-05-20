@@ -269,6 +269,8 @@ module.exports = {
 			key = path.join(key, 'index.html');
 		}
 
+		key = key.toLowerCase();
+
 		var params = {Bucket: sails.config.aws.s3.bucket, Key: key};
 		// var file = require('fs').createWriteStream('/path/to/file.jpg');
 		s3.getObject(params)

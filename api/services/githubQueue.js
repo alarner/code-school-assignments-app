@@ -114,9 +114,11 @@ queue.process('github', function(job, done){
 				job.log('Start uploading %s', task.key);
 				var fpath = path.join(results.unzip, task.path);
 				job.log('Start uploading %s', JSON.stringify(job.data.submission));
+				var putKey = path.join(job.data.submission.id.toString(), task.key);
+				putKey = putKey.toLowerCase();
 				s3.putObject({
 					Bucket: job.data.bucket,
-					Key: path.join(job.data.submission.id.toString(), task.key),
+					Key: putKey,
 					ACL: 'public-read',
 					ContentType: mime.lookup(fpath),
 					Body: fs.createReadStream(fpath)
