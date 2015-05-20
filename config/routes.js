@@ -32,6 +32,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  'get /submission/view/*': 'SubmissionController.view',
+
   'get /': 'HomepageController.index',
 
   '/user/*': {
@@ -42,7 +44,6 @@ module.exports.routes = {
   'get /logout': 'AuthController.logout',
   'post /logout': 'AuthController.logout',
   'get /register': 'AuthController.register',
-  'get /submission/view/*': 'SubmissionController.view',
 
   'get /auth/user': 'AuthController.user',
 
