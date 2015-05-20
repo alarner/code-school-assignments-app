@@ -73,7 +73,6 @@ module.exports = {
 			}],
 			// Create the submission record
 			create: ['validation', 'cleanup', function(cb) {
-				console.log('create');
 				Submission.create(data, cb);
 			}],
 			// Get the assignment from the created submission
@@ -119,7 +118,6 @@ module.exports = {
 			update: ['create', 'assignment', function(cb, results) {
 				if(results.assignment.distSubdir === null) return cb(null, false);
 				// if(!results.bucket) return cb(null, results.create);
-				console.log('update');
 				Submission.update({
 					id: results.create.id
 				}, {
@@ -270,7 +268,6 @@ module.exports = {
 		}
 
 		key = key.toLowerCase();
-		console.log(key);
 
 		var params = {Bucket: sails.config.aws.s3.bucket, Key: key};
 		// var file = require('fs').createWriteStream('/path/to/file.jpg');
