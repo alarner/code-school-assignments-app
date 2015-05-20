@@ -5,7 +5,7 @@ var path = require('path');
 var mime = require('mime');
 var fs = require('fs-extra');
 var recursive = require('recursive-readdir');
-var unzip = require('unzip');
+var AdmZip = require('adm-zip');
 var uuid = require('node-uuid');
 var config = require('../../config/redis');
 var _ = require('lodash');
@@ -79,18 +79,10 @@ queue.process('github', function(job, done){
 		unzip: ['dir', 'download', function(cb, results) {
 			job.progress(progress.START_UNZIP, progress.FINISH_ALL);
 			var unzipPath = path.join(results.dir, 'unzipped');
-			
 
-			fs.createReadStream(results.download)
-			.pipe(unzip.Extract({ path: unzipPath }))
-			.on('error', function(err) {
-				cb(err);
-			})
-			.on('close', function() {
-				job.log('Finished unzipping from %s', results.download);
-				job.progress(progress.FINISH_UNZIP, progress.FINISH_ALL);
-				cb(null, unzipPath);
-			});
+			var zip = new AdmZip(results.download);
+			zip.extractAllTo(unzipPath);
+			cb(null, unzipPath);
 		}],
 		upload: ['unzip', function(cb, results) {
 			var uploadErr = null;
