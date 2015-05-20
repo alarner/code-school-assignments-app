@@ -116,7 +116,8 @@ module.exports = {
 
 			// 	createBucket(cb);
 			// }],
-			update: ['create', function(cb, results) {
+			update: ['create', 'assignment', function(cb, results) {
+				if(results.assignment.distSubdir === null) return cb(null, false);
 				// if(!results.bucket) return cb(null, results.create);
 				console.log('update');
 				Submission.update({
@@ -138,7 +139,7 @@ module.exports = {
 				});
 			}],
 			download: ['update', 'assignment', 'create', function(cb, results) {
-				if(!results.update.location) return cb();
+				if(!results.update || !results.update.location) return cb();
 				var parsedUrl = url.parse(data.url);
 				if(!parsedUrl.pathname) {
 					return cb({
