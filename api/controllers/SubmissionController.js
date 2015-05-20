@@ -270,6 +270,7 @@ module.exports = {
 		}
 
 		key = key.toLowerCase();
+		console.log(key);
 
 		var params = {Bucket: sails.config.aws.s3.bucket, Key: key};
 		// var file = require('fs').createWriteStream('/path/to/file.jpg');
