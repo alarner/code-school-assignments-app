@@ -444,8 +444,8 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog', 'cfp
 		if(!submission) {
 			return '';
 		}
-		else if(submission.location) {
-			return submission.location+'index.html';
+		else if(submission.location !== null) {
+			return 'http://s-'+submission.id+'.assignments.nutellahabit.com';
 		}
 		else {
 			return submission.url;
