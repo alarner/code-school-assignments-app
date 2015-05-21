@@ -33,6 +33,10 @@ var progress = {
 	FINISH_ALL: 13
 };
 
+queue.on('error', function(err) {
+	console.trace(err);
+});
+
 // job = {
 // 	target: 'http://github.com/alarner/test',
 //	bucket: '3905416d-2097-4f5b-923f-945b876f9b1b'
