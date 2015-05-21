@@ -155,12 +155,17 @@ module.exports = {
 					});
 				}
 
+				var target = 'https://github.com/'+pieces[0]+'/'+pieces[1];
+				if(target.substring(target.length-4).toLowerCase() !== '.git') {
+					target += '.git';
+				}
+
 				githubQueue.queue.create('github', {
 					title: 'GitHub download for '+
 							req.user.firstName+' '+req.user.lastName+
 							' [assignment='+data.assignment+
 							', submission='+results.update.id+']',
-					target: 'https://github.com/'+pieces[0]+'/'+pieces[1]+'.git',
+					target: target,
 					bucket: sails.config.aws.s3.bucket,
 					assignment: results.assignment,
 					submission: results.create
