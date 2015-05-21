@@ -83,12 +83,16 @@ async.auto({
 	download: ['submission', 'assignment', 'user', function(cb, results) {
 		var parsedUrl = url.parse(results.submission.url);
 		var pieces = _.filter(parsedUrl.pathname.split('/'), function(s) { return s; });
+		var target = 'https://github.com/'+pieces[0]+'/'+pieces[1];
+		if(target.substring(target.length-4).toLowerCase() !== '.git') {
+			target += '.git';
+		}
 		githubQueue.queue.create('github', {
 			title: 'GitHub download for '+
 					results.user.firstName+' '+results.user.lastName+
 					' [assignment='+results.assignment.id+
 					', submission='+results.submission.id+']',
-			target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'.git',
+			target: target,
 			bucket: config.aws.s3.bucket,
 			assignment: results.assignment,
 			submission: results.submission
