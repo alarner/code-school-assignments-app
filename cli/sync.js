@@ -88,7 +88,7 @@ async.auto({
 					results.user.firstName+' '+results.user.lastName+
 					' [assignment='+results.assignment.id+
 					', submission='+results.submission.id+']',
-			target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
+			target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'.git',
 			bucket: config.aws.s3.bucket,
 			assignment: results.assignment,
 			submission: results.submission

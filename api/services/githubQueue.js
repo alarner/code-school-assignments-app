@@ -5,11 +5,11 @@ var path = require('path');
 var mime = require('mime');
 var fs = require('fs-extra');
 var recursive = require('recursive-readdir');
-var AdmZip = require('adm-zip');
 var uuid = require('node-uuid');
 var config = require('../../config/redis');
 var _ = require('lodash');
 var s3 = require('./s3');
+var nodegit = require('nodegit');
 var queue = kue.createQueue({
 	prefix: 'github',
 	redis: {
@@ -32,7 +32,6 @@ var progress = {
 	FINISH_DELETE: 12,
 	FINISH_ALL: 13
 };
-
 
 // job = {
 // 	target: 'http://github.com/alarner/test',
@@ -61,33 +60,38 @@ queue.process('github', function(job, done){
 			});
 		},
 		download: ['dir', function(cb, results) {
-			job.progress(progress.START_DOWNLOAD, progress.FINISH_ALL);
-			var zipFile = path.join(results.dir, 'all.zip');
-			job.log('Starting downloading from %s', job.data.target);
-			request
-			.get(job.data.target)
-			.pipe(fs.createWriteStream(zipFile))
-			.on('error', function(err) {
-				cb(err);
-			})
-			.on('end', function() {
-				job.log('Finished downloading end %s', job.data.target);
-			})
-			.on('close', function() {
-				job.log('Finished downloading from %s', job.data.target);
-				job.progress(progress.FINISH_DOWNLOAD, progress.FINISH_ALL);
-				cb(null, zipFile)
+			// job.progress(progress.START_DOWNLOAD, progress.FINISH_ALL);
+			// var zipFile = path.join(results.dir, 'all.zip');
+			// job.log('Starting downloading from %s', job.data.target);
+			// request
+			// .get(job.data.target)
+			// .pipe(fs.createWriteStream(zipFile))
+			// .on('error', function(err) {
+			// 	cb(err);
+			// })
+			// .on('end', function() {
+			// 	job.log('Finished downloading end %s', job.data.target);
+			// })
+			// .on('close', function() {
+			// 	job.log('Finished downloading from %s', job.data.target);
+			// 	job.progress(progress.FINISH_DOWNLOAD, progress.FINISH_ALL);
+			// 	cb(null, zipFile)
+			// });
+			var savePath = path.join(results.dir, 'unzipped');
+			nodegit.Clone(job.data.target, savePath)
+			.then(function(repository) {
+				cb(null, savePath);
 			});
 		}],
-		unzip: ['dir', 'download', function(cb, results) {
-			job.progress(progress.START_UNZIP, progress.FINISH_ALL);
-			var unzipPath = path.join(results.dir, 'unzipped');
+		// unzip: ['dir', 'download', function(cb, results) {
+		// 	job.progress(progress.START_UNZIP, progress.FINISH_ALL);
+		// 	var unzipPath = path.join(results.dir, 'unzipped');
 
-			var zip = new AdmZip(results.download);
-			zip.extractAllTo(unzipPath);
-			cb(null, unzipPath);
-		}],
-		upload: ['unzip', function(cb, results) {
+		// 	var zip = new AdmZip(results.download);
+		// 	zip.extractAllTo(unzipPath);
+		// 	cb(null, unzipPath);
+		// }],
+		upload: ['download', function(cb, results) {
 			var uploadErr = null;
 			job.log('Start uploading to S3');
 			job.progress(progress.START_UPLOAD, progress.FINISH_ALL);
@@ -107,7 +111,7 @@ queue.process('github', function(job, done){
 			}
 			var uploadQueue = async.queue(function(task, cb) {
 				job.log('Start uploading %s', task.key);
-				var fpath = path.join(results.unzip, task.path);
+				var fpath = path.join(results.download, task.path);
 				job.log('Start uploading %s', JSON.stringify(job.data.submission));
 				var putKey = path.join(job.data.submission.id.toString(), task.key);
 				putKey = putKey.toLowerCase();
@@ -134,12 +138,12 @@ queue.process('github', function(job, done){
 				}
 				cb(uploadErr);
 			};
-			recursive(results.unzip, function (err, files) {
-				job.log('Finished reading directory %s. %d files found.', results.unzip, files.length);
+			recursive(results.download, function (err, files) {
+				job.log('Finished reading directory %s. %d files found.', results.download, files.length);
 				job.progress(progress.READDIR, progress.FINISH_ALL);
 				// Files is an array of filename
 				_.each(files, function(file) {
-					var p = file.substring(results.unzip.length+1);
+					var p = file.substring(results.download.length+1);
 					if(key = filter(p)) {
 						uploadQueue.push({key: key, path: p});
 					}

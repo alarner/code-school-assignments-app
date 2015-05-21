@@ -160,7 +160,7 @@ module.exports = {
 							req.user.firstName+' '+req.user.lastName+
 							' [assignment='+data.assignment+
 							', submission='+results.update.id+']',
-					target: 'http://github.com/'+pieces[0]+'/'+pieces[1]+'/archive/master.zip',
+					target: 'https://github.com/'+pieces[0]+'/'+pieces[1]+'.git',
 					bucket: sails.config.aws.s3.bucket,
 					assignment: results.assignment,
 					submission: results.create
