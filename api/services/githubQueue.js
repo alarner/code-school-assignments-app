@@ -153,6 +153,7 @@ queue.process('github', function(job, done){
 				// Files is an array of filename
 				_.each(files, function(file) {
 					var p = file.substring(results.download.length+1);
+					job.log('p = %s.', p);
 					if(key = filter(p)) {
 						uploadQueue.push({key: key, path: p});
 					}
