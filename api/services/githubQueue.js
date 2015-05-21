@@ -70,6 +70,9 @@ queue.process('github', function(job, done){
 			.on('error', function(err) {
 				cb(err);
 			})
+			.on('end', function() {
+				job.log('Finished downloading end %s', job.data.target);
+			})
 			.on('close', function() {
 				job.log('Finished downloading from %s', job.data.target);
 				job.progress(progress.FINISH_DOWNLOAD, progress.FINISH_ALL);
