@@ -88,6 +88,7 @@ queue.process('github', function(job, done){
 				cb(null, savePath);
 			})
 			.catch(function(err) {
+				job.log('Error downloading from %s', job.data.target);
 				cb(err);
 			});
 		}],
