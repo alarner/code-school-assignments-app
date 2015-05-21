@@ -105,9 +105,10 @@ queue.process('github', function(job, done){
 			job.log('Start uploading to S3');
 			job.progress(progress.START_UPLOAD, progress.FINISH_ALL);
 			function filter(p) {
-				var arr = p.split('/');
-				arr.shift();
-				p = '/'+arr.join('/');
+				// var arr = p.split('/');
+				// arr.shift();
+				// p = '/'+arr.join('/');
+				p = path.join('/', p);
 				if(p.substring(0, distSubdir.length) === distSubdir) {
 					return p.substring(distSubdir.length);
 				}
@@ -153,7 +154,6 @@ queue.process('github', function(job, done){
 				// Files is an array of filename
 				_.each(files, function(file) {
 					var p = file.substring(results.download.length+1);
-					job.log('p = %s.', p);
 					if(key = filter(p)) {
 						uploadQueue.push({key: key, path: p});
 					}
