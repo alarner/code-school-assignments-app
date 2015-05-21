@@ -261,7 +261,7 @@ module.exports = {
 	},
 	view: function(req, res) {
 		if(req.host.substring(0, 2) != 's-') {
-			res.notFound();
+			return res.notFound();
 		}
 		var pieces = req.host.split('.');
 		var prefix = pieces[0].split('-');
