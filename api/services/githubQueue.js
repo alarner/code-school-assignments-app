@@ -86,6 +86,9 @@ queue.process('github', function(job, done){
 			.then(function(repository) {
 				job.log('Finished downloading from %s', job.data.target);
 				cb(null, savePath);
+			})
+			.catch(function(err) {
+				cb(err);
 			});
 		}],
 		// unzip: ['dir', 'download', function(cb, results) {
