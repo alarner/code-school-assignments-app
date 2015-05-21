@@ -60,9 +60,9 @@ queue.process('github', function(job, done){
 			});
 		},
 		download: ['dir', function(cb, results) {
-			// job.progress(progress.START_DOWNLOAD, progress.FINISH_ALL);
+			job.progress(progress.START_DOWNLOAD, progress.FINISH_ALL);
 			// var zipFile = path.join(results.dir, 'all.zip');
-			// job.log('Starting downloading from %s', job.data.target);
+			job.log('Starting downloading from %s', job.data.target);
 			// request
 			// .get(job.data.target)
 			// .pipe(fs.createWriteStream(zipFile))
@@ -80,6 +80,7 @@ queue.process('github', function(job, done){
 			var savePath = path.join(results.dir, 'unzipped');
 			nodegit.Clone(job.data.target, savePath)
 			.then(function(repository) {
+				job.log('Finished downloading from %s', job.data.target);
 				cb(null, savePath);
 			});
 		}],
