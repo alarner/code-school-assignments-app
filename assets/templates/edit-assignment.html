@@ -1,0 +1,8 @@
+<section class="form assignment">
+	<h1 ng-bind="assignment.name"></h1>
+	<form class="form" ng-submit="edit(assignment)">
+		<div ng-include="'templates/partials/assignment-form.html'"></div>
+		<button type="button" class="btn danger" ng-click="verifyDelete()">Delete</button>
+		<button type="submit" class="btn">Save Assignment</button>
+	</form>
+</section>

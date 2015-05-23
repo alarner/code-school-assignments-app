@@ -1,0 +1,42 @@
+<section class="dashboard">
+	<div ng-hide="assignments.length || loading" class="ng-hide">
+		There are no assignments right now. Come back later...
+	</div>
+	<div ng-hide="assignments.length || !loading" class="ng-hide loading">
+		Loading assignments...
+	</div>
+	<div class="week" ng-repeat="week in assignments">
+		<h1>{{ week.start.toDate() | date : 'MMM. d'}} - {{ week.end.toDate() | date : 'MMM. d'}}</h1>
+		<div class="assignments">
+			<div class="a" ng-repeat="assignment in week.assignments">
+				<a class="datetime" ui-sref="instructor-assignment({id: assignment.attributes.id})">
+					<div>{{ assignment.attributes.dueAt.toDate() | date : 'EEEE'}}</div>
+					<div class="time">{{ assignment.attributes.dueAt.toDate() | date : 'h:mm a'}}</div>
+				</a>
+				<a ui-sref="instructor-assignment({id: assignment.attributes.id})">
+					<div ng-bind="assignment.attributes.name"></div>
+				</a>
+
+				<div class="buttons">
+
+					<a class="btn" ng-show="assignment.submissions.length" ng-click="grade(assignment.attributes.id)">Grade <span class="notification" ng-bind="assignment.submissions.length"></span></a>
+					
+					<a ui-sref="edit-assignment({id: assignment.attributes.id})" class="btn">Edit</a>
+					
+					<a ng-href="{{ assignment.attributes.url }}" class="btn">
+						<div class="ion-link"></div>
+					</a>
+
+				</div>
+				<div class="progress">
+					<div class="label">On Time Submissions:</div>
+					<progress max="{{numStudents}}" value="{{assignment.attributes.onTimeCount}}"></progress>
+				</div>
+				<div class="progress">
+					<div class="label">Completed Submissions:</div>
+					<progress max="{{numStudents}}" value="{{assignment.attributes.completedCount}}"></progress>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

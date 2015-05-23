@@ -1,0 +1,55 @@
+<section class="view-assignment">
+	<p class="error" ng-show="error.generic" ng-bind="error.generic"></p>
+	<div ng-show="assignment">
+		<h1>{{ assignment.name }}</h1>
+		<div><a ng-href="{{ assignment.url }}">Instructions</a> | Due on: {{ assignment.dueAt | date : 'fullDate' }}</div>
+		<div ng-show="assignment.distSubdir">
+			<div>Required Files:</div>
+			<ul>
+				<li>{{ assignment.distSubdir }}/index.html</li>
+			</ul>
+		</div>
+		<div ng-show="students.length">
+			<h2>Class Status</h2>
+			<div ng-repeat="student in students">
+				<div class="submission-row">
+					<div class="user">
+						<img ng-src="{{ student.avatar }}" class="avatar" ui-sref="view-student({id: student.id})">
+						<div class="name" ng-bind="student.name"></div>
+					</div>
+					<div class="content">
+						<h4>
+							<span ng-class="student.assignment.status('color')">{{ student.assignment.status('name') }}</span>
+							<span ng-show="student.submissions.length"> | </span>
+							<a ng-show="student.submissions[0].url" ng-href="{{student.submissions[0].url}}">Submission Link</a>
+							<span ng-show="student.submissions[0].location"> | </span>
+							<a ng-href="{{student.submissions[0].location}}" ng-show="student.submissions[0].location">Live Link</a>
+						</h4>
+						<div ng-bind="student.submissions[0].notes"></div>
+						<div class="date">{{ student.submissions[0].createdAt | date : 'fullDate' }}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div ng-show="assignment.submissions.length">
+			<div ng-repeat="submission in assignment.submissions">
+				<div class="submission-row">
+					<img ng-src="{{ submission.user.avatar }}" class="avatar">
+					<div class="content">
+						<h4><a href="#">Submission Link</a> | <a href="#">Live Link</a></h4>
+						<div ng-bind="submission.notes"></div>
+						<div class="date">{{ submission.createdAt | date : 'fullDate' }}</div>
+					</div>
+				</div>
+				<div class="submission-row" ng-if="submission.grade">
+					<img ng-src="{{ submission.grade.user.avatar }}" class="avatar">
+					<div class="content">
+						<h4>Grade: <span ng-class="submission.grade.convert('color')">{{ submission.grade.convert('name') }}</span></h4>
+						<div ng-bind="submission.grade.notes" class="notes"></div>
+						<div class="date">{{ submission.grade.createdAt | date : 'fullDate' }}</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+</section>

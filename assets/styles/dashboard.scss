@@ -1,0 +1,93 @@
+.dashboard {
+	background: #f5f5f5;
+	margin-top: 2em;
+	padding: 2em;
+	max-width: 660px;
+
+	.loading {
+		&:before {
+			content: url(/images/ajax-loader.gif);
+			position: relative;
+			top: 6px;
+			padding-right: 5px;
+		}
+	}
+
+	h1 {
+		font-size: 22px;
+		font-weight: 300;
+		line-height: 2;
+		margin-top: 0;
+		color: #2f506c;
+	}
+
+	.week {
+		margin-bottom: 3em;
+
+		.status {
+			margin: 4px 8px 4px 0;
+		}
+	}
+
+	.assignments {
+		.a {
+			overflow: hidden;
+			padding: 1em;
+			margin-left: 1em;
+			color: #333;
+			> div, > a {
+				float: left;
+			}
+
+			> a {
+				text-decoration: none;
+				color: #333;
+			}
+
+			.buttons {
+				float: right;
+				a {
+					display: block;
+					float: left;
+					margin-left: 0.5em;
+				}
+			}
+
+			.progress {
+				float: left;
+				width: 100%;
+				margin-top: 1em;
+
+				.label {
+					font-size: 0.8em;
+				}
+
+				progress {
+					width: 100%;
+				}
+			}
+
+			.datetime {
+				display: block;
+				margin-right: 1em;
+				min-width: 5.625em;
+			}
+
+			.time, .status {
+				font-size: 12px;
+			}
+
+			.status {
+				font-weight: normal;
+				width: 100%;
+				span {
+					font-weight: bold;
+				}
+			}
+		}
+
+		.a:nth-child(odd) {
+			background: #ECECEC;
+		}
+	}
+}

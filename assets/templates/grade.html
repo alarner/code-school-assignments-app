@@ -1,0 +1,32 @@
+<section>
+	<div ng-show="showGrade" class="grade-tools">
+		<div class="notes-score-student">
+			<div class="notes-student">
+				<div class="student">
+					<div class="avatar">
+						<img ng-src="{{submission.user.avatar}}">
+						<div class="name" ng-bind="submission.user.name"></div>
+					</div>
+					<div class="link-summary">
+						<div>
+							<a ng-href="{{submission.url}}" target="_blank">Submission Link</a>
+							<span class="submission-date" ng-bind="submission.createdAt | date : 'short'"></span>
+						</div>
+						<div ng-bind="submission.notes">
+						</div>
+					</div>
+				</div>
+				<textarea focus-on="grade-notes" ng-model="notes" ng-class="error.notes ? 'error' : ''"></textarea>
+			</div>
+			<div class="score">
+				<button class="btn" ng-click="setScore(0)()">DOA</button>
+				<button class="btn" ng-click="setScore(1)()">INCOMPLETE</button>
+				<button class="btn" ng-click="setScore(2)()">GOOD</button>
+				<button class="btn" ng-click="setScore(3)()">GREAT</button>
+			</div>
+		</div>
+	</div>
+	<iframe ng-src="{{getSrc(submission) | trustAsResourceUrl}}" width="100%" height="100%">
+		<p>Your browser does not support iframes.</p>
+	</iframe>
+</section>

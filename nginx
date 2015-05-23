@@ -1,0 +1,71 @@
+server {
+	listen 80 default_server;
+
+	server_name *.assignments.nutellahabit.com;
+
+	gzip_vary		on;
+	gzip_types		text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+	access_log /var/log/nginx/s.assignments.nutellahabit.com/access.log;
+	error_log /var/log/nginx/s.assignments.nutellahabit.com/error.log;
+
+	location / {
+		proxy_pass			http://127.0.0.1:1337/submission/view;
+		proxy_redirect		off;
+
+		proxy_set_header	Host		$host;
+		proxy_set_header	X-Real-IP	$remote_addr;
+		proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+	}
+}
+
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name assignments.nutellahabit.com;
+
+	gzip_vary		on;
+	gzip_types		text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+	access_log /var/log/nginx/assignments.nutellahabit.com/access.log;
+	error_log /var/log/nginx/assignments.nutellahabit.com/error.log;
+
+	location ~ ^\/(bower_components|images|js|css|templates) {
+		root /usr/share/nginx/www/assignments.nutellahabit.com/.tmp/public;
+		add_header Access-Control-Allow-Origin *;
+		try_files $uri $uri/ =404;
+	}
+
+
+	location / {
+		proxy_pass			http://127.0.0.1:1337/;
+		proxy_redirect		off;
+
+		proxy_set_header	Host		$host;
+		proxy_set_header	X-Real-IP	$remote_addr;
+		proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+	}
+}
+
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name queue.assignments.nutellahabit.com;
+
+	gzip_vary		on;
+	gzip_types		text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+	access_log /var/log/nginx/queue.assignments.nutellahabit.com/access.log;
+	error_log /var/log/nginx/queue.assignments.nutellahabit.com/error.log;
+
+	location / {
+		proxy_pass			http://127.0.0.1:3000/;
+		proxy_redirect		off;
+
+		proxy_set_header	Host		$host;
+		proxy_set_header	X-Real-IP	$remote_addr;
+		proxy_set_header	X-Forwarded-For	$proxy_add_x_forwarded_for;
+	}
+}

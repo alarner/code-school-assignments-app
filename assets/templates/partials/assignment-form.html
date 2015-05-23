@@ -1,0 +1,26 @@
+<label ng-class="error.name ? 'error' : ''">
+	<div class="label required">Name</div>
+	<input type="text" placeholder="Enter the assignment name" ng-model="assignment.name">
+	<p class="error" ng-bind="error.name" ng-show="error.name"></p>
+</label>
+<label ng-class="error.url ? 'error' : ''">
+	<div class="label required">URL</div>
+	<input type="text" placeholder="Enter the assignment URL" ng-model="assignment.url">
+	<p class="error" ng-bind="error.url" ng-show="error.url"></p>
+</label>
+<label ng-class="error.dueDate ? 'error' : ''">
+	<div class="label required">Due Date</div>
+	<input type="date" ng-model="assignment.dueDate">
+	<p class="error" ng-bind="error.dueDate" ng-show="error.dueDate"></p>
+</label>
+<label ng-class="error.dueTime ? 'error' : ''">
+	<div class="label required">Time</div>
+	<input type="time" ng-model="assignment.dueTime" step="60">
+	<p class="error" ng-bind="error.dueTime" ng-show="error.dueTime"></p>
+</label>
+<label>
+	<div class="label">Distribution Subdirectory</div>
+	<input type="text" ng-model="assignment.distSubdir" placeholder="/dist">
+	<p class="error" ng-bind="error.distSubdir" ng-show="error.distSubdir"></p>
+	<p class="default">You may optionally specify a subdirectory of the GitHub repo where you are requiring a distribution of the assignment to be located. If you do that particular subdirectory will be hosted on S3 for viewing.</p>
+</label>

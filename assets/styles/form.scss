@@ -1,0 +1,42 @@
+.form {
+	h1 {
+		font-size: 28px;
+		margin-bottom: 30px;
+		border-bottom: 1px solid #e8e8e8;
+		font-family: 'open sans', arial, sans-serif;
+		font-weight: 300;
+	}
+
+	.label {
+		display: inline-block;
+		margin-bottom: 5px;
+		font-weight: 700;
+		color: #333;
+		font-size: 0.8125em;
+
+		&.required:after {
+			content: '*';
+			color: red;
+		}
+	}
+
+	input, textarea {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 6px 12px;
+		font-size: 14px;
+		line-height: 1.42857143;
+		color: #555;
+		border: 1px solid #ccc;
+
+		&:focus {
+			border-color: #666;
+		}
+	}
+
+	label {
+		display: block;
+		margin-bottom: 1em;
+	}
+}

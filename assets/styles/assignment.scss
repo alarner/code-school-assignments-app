@@ -1,0 +1,58 @@
+.view-assignment {
+	max-width: 40em;
+	margin: 0 auto;
+}
+
+.submission-row {
+	overflow: hidden;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #E9E9E9;
+
+	.user, .content {
+		float: left;
+	}
+
+	.user {
+		width: 15%;
+		opacity: 0.5;
+
+		.name {
+			text-align: center;
+			font-size: 0.7em;
+			margin-top: 0.3em;
+		}
+	}
+
+	.avatar {
+		display: block;
+	}
+
+	.content {
+		width: 85%;
+		padding-left: 20px;
+		box-sizing: border-box;
+
+		h4 {
+			margin: 0 0 0.3em 0;
+			color: #666;
+		}
+
+		.notes {
+			margin-bottom: 0.3em;
+		}
+
+		.date {
+			color: #999;
+			font-size: 0.8em;
+		}
+	}
+}
+
+@media (min-width: $small-breakpoint) {
+	.submission-row {
+		.avatar {
+			width: 6em;
+		}
+	}
+}

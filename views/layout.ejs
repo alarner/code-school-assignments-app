@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Iron Assignments</title>
+
+		<!-- Viewport mobile tag for sensible mobile support -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<meta name="fragment" content="!">
+		<base href="/">
+
+		
+		<link rel="stylesheet" type="text/css" href="/css/importer.css">
+		<link href='\\fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'> 
+	</head>
+
+	<body>
+		<%- body %>
+
+		<% if(process.env.NODE_ENV === 'production') { %>
+
+		<% } else { %>
+			<%- blocks.scripts %>
+		<% } %>
+
+		<%- blocks.appData %>
+	</body>
+</html>
