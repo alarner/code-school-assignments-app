@@ -21,18 +21,18 @@ module.exports = {
   //   connection: 'someMysqlServer'
   // },
 
-  connections: {
-    postgres: {
-      adapter: 'sails-postgresql',
-      url: process.env.DATABASE_URL,
-      pool: false,
-      ssl: true
-    }
-  },
+  // connections: {
+  //   postgres: {
+  //     adapter: 'sails-postgresql',
+  //     url: process.env.DATABASE_URL,
+  //     pool: false,
+  //     ssl: true
+  //   }
+  // },
 
-  models: {
-    migrate: 'safe'
-  }
+  // models: {
+  //   migrate: 'safe'
+  // }
 
   /***************************************************************************
    * Set the port in the production environment to 80                        *
