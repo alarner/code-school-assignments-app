@@ -1,5 +1,5 @@
 angular.module('app.services', [])
-.factory('AssignmentStatus', function() {
+.factory('AssignmentStatus', [function() {
 	return {
 		LATE: {
 			cssClass: 'late',
@@ -42,8 +42,8 @@ angular.module('app.services', [])
 			color: 'default'
 		}
 	};
-})
-.factory('Assignment', function(AssignmentStatus, Grade) {
+}])
+.factory('Assignment', ['AssignmentStatus', 'Grade', function(AssignmentStatus, Grade) {
 	return {
 		AssignmentModel: function(assignment, submissions) {
 			var self = this;
@@ -135,8 +135,8 @@ angular.module('app.services', [])
 			});
 		}
 	};
-})
-.factory('Grade', function(AssignmentStatus) {
+}])
+.factory('Grade', ['AssignmentStatus', function(AssignmentStatus) {
 	return {
 		GradeModel: function(grade) {
 			for(var i in grade) {
@@ -167,8 +167,8 @@ angular.module('app.services', [])
 			}
 		}
 	}
-})
-.factory('User', function($http) {
+}])
+.factory('User', ['$http', function($http) {
 	var user = {};
 	var events = {
 		login: [],
@@ -216,8 +216,8 @@ angular.module('app.services', [])
 			});
 		}
 	};
-})
-.factory('Validate', function() {
+}])
+.factory('Validate', [function() {
 	return {
 		credentials: function(credentials) {
 			var error = {
@@ -313,11 +313,11 @@ angular.module('app.services', [])
 			return false;
 		}
 	};
-})
-.factory('focus', function ($rootScope, $timeout) {
+}])
+.factory('focus', ['$rootScope', '$timeout', function ($rootScope, $timeout) {
 	return function(name) {
 		$timeout(function (){
 			$rootScope.$broadcast('focusOn', name);
 		});
 	}
-});
+}]);

@@ -31,11 +31,11 @@
 
 $ionicons-font-path: "/bower_components/ionicons/fonts" !default;
 
-@import '../bower_components/normalize.css/normalize.css';
+@import '../bower_components/normalize-scss/_normalize';
 @import '../bower_components/ionicons/scss/ionicons';
-@import '../bower_components/ngDialog/css/ngDialog.css';
-@import '../bower_components/ngDialog/css/ngDialog-theme-default.css';
-@import '../bower_components/ngDialog/css/ngDialog-theme-plain.css';
+// @import '../bower_components/ngDialog/css/ngDialog.css';
+// @import '../bower_components/ngDialog/css/ngDialog-theme-default.css';
+// @import '../bower_components/ngDialog/css/ngDialog-theme-plain.css';
 @import 'global';
 @import 'status';
 @import 'notification';

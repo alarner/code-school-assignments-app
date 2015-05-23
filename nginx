@@ -32,7 +32,13 @@ server {
 	error_log /var/log/nginx/assignments.nutellahabit.com/error.log;
 
 	location ~ ^\/(bower_components|images|js|css|templates) {
-		root /usr/share/nginx/www/assignments.nutellahabit.com/.tmp/public;
+		root /usr/share/nginx/www/assignments.nutellahabit.com/www;
+		add_header Access-Control-Allow-Origin *;
+		try_files $uri $uri/;
+	}
+
+	location ~ ^\/(bower_components|images|js|css|templates) {
+		root /usr/share/nginx/www/assignments.nutellahabit.com/assets;
 		add_header Access-Control-Allow-Origin *;
 		try_files $uri $uri/ =404;
 	}

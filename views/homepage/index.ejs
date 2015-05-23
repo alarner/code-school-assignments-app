@@ -13,4 +13,5 @@
 	<main ui-view></main>
 </div>
 <% block('scripts', scripts) %>
+<% block('styles', styles) %>
 <% block('appData', '<script type="text/javascript">angular.module(\'app.data\', []).value(\'userData\', '+JSON.stringify(user)+');</script>') %>

@@ -1,5 +1,5 @@
 angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.directives', 'ui.router'])
-.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 	// $locationProvider.html5Mode(true);
 
@@ -61,7 +61,7 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 	});
 
 	$urlRouterProvider.otherwise('/');
-})
+}])
 .constant('stateSettings', {
 	'login': {
 		visibleLoggedIn: false,
@@ -119,7 +119,7 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		requiresType: [2]
 	}
 })
-.run(function($rootScope, $state, userData, User, stateSettings) {
+.run(['$rootScope', '$state', 'userData', 'User', 'stateSettings', function($rootScope, $state, userData, User, stateSettings) {
 	if(userData) User.set(userData);
 	$rootScope.$on(
 		'$stateChangeStart',
@@ -152,4 +152,4 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 			}
 		}
 	);
-});
+}]);
