@@ -389,7 +389,9 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		}
 	};
 }])
-.controller('GradeCtrl', ['$scope', '$rootScope', '$stateParams', '$http', '$state', 'focus', function($scope, $rootScope, $stateParams, $http, $state, focus) {
+.controller('GradeCtrl', [
+	'$scope', '$rootScope', '$stateParams', '$http', '$state', '$location', 'focus',
+	function($scope, $rootScope, $stateParams, $http, $state, $location, focus) {
 	function toggleGradeForm() {
 		$scope.showGrade = !$scope.showGrade
 		focus('grade-notes');
@@ -445,7 +447,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 			return '';
 		}
 		else if(submission.location !== null) {
-			return 'http://s-'+submission.id+'.assignments.nutellahabit.com';
+			return 'http://s-'+submission.id+'.'+$location.host();
 		}
 		else {
 			return submission.url;

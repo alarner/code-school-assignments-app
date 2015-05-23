@@ -31,12 +31,14 @@ server {
 	access_log /var/log/nginx/assignments.nutellahabit.com/access.log;
 	error_log /var/log/nginx/assignments.nutellahabit.com/error.log;
 
+	# This is for PRODDUCTION ONLY (comment out development)
 	location ~ ^\/(bower_components|images|js|css|templates) {
 		root /usr/share/nginx/www/assignments.nutellahabit.com/www;
 		add_header Access-Control-Allow-Origin *;
 		try_files $uri $uri/;
 	}
 
+	# This is for DEVELOPMENT ONLY (comment out production)
 	location ~ ^\/(bower_components|images|js|css|templates) {
 		root /usr/share/nginx/www/assignments.nutellahabit.com/assets;
 		add_header Access-Control-Allow-Origin *;

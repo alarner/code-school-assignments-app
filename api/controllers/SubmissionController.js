@@ -261,7 +261,7 @@ module.exports = {
 	},
 	view: function(req, res) {
 		if(req.host.substring(0, 2) != 's-') {
-			return res.notFound();
+			return res.notFound('no s- prefix');
 		}
 		var pieces = req.host.split('.');
 		var prefix = pieces[0].split('-');
@@ -280,7 +280,7 @@ module.exports = {
 		.createReadStream()
 		.on('error', function(err) {
 			if(err.code === 'NoSuchKey') {
-				res.notFound();
+				res.notFound('File not found');
 			}
 			else {
 				res.serverError(err);

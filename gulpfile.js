@@ -95,7 +95,7 @@ gulp.task('server', function() {
 		}
 		else {
 			console.log('Starting server...');
-			server = spawn('sails', ['lift', '--prod']);
+			server = spawn('sails', ['lift']);
 			serverRunning = true;
 			server.on('close', function(code) {
 				console.log('Server closed with code ['+code+']');
