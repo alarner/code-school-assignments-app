@@ -54,7 +54,9 @@ module.exports = {
 
 			_.each(results.submissions, function(submission) {
 				var userId = submission.user.toString();
-				users[userId].submissions.push(submission.toObject());
+				if(users.hasOwnProperty(userId)) {
+					users[userId].submissions.push(submission.toObject());
+				}
 			});
 
 			res.jsonx(_.values(users));
