@@ -11,6 +11,7 @@ var url = require('url');
 var _ = require('lodash');
 var UserType = require('../constants/UserType');
 var path = require('path');
+var mime = require('mime');
 
 module.exports = {
 	create: function(req, res) {
@@ -275,6 +276,9 @@ module.exports = {
 		key = key.toLowerCase();
 
 		var params = {Bucket: sails.config.aws.s3.bucket, Key: key};
+
+		res.setHeader('Content-Type', mime.lookup(key));
+
 		// var file = require('fs').createWriteStream('/path/to/file.jpg');
 		s3.getObject(params)
 		.createReadStream()
