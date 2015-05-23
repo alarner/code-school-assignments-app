@@ -57,6 +57,7 @@
 NAME="Assignments"
 NODE_BIN_DIR="/usr/local/bin"
 NODE_PATH="/usr/local/lib/node_modules"
+NODE_ENV="production"
 APPLICATION_PATH="/usr/share/nginx/www/assignments.nutellahabit.com/app.js"
 PIDFILE="/home/ubuntu/assignments.nutellahabit.com/assignments.nutellahabit.com.pid"
 LOG="/home/ubuntu/assignments.nutellahabit.com/assignments.nutellahabit.com-forever.log"
@@ -90,8 +91,8 @@ start() {
     #
     # Note that redirecting the output to /dev/null (or anywhere) is necessary
     # to make this script work if provisioning the service via Chef.
-    sudo -u ubuntu forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &
-    echo "forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &"
+    sudo -u ubuntu NODE_ENV=$NODE_ENV forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &
+    echo "NODE_ENV=$NODE_ENV forever --pidFile $PIDFILE -a -l $LOG --minUptime $MIN_UPTIME --spinSleepTime $SPIN_SLEEP_TIME start $APPLICATION_PATH 2>&1 > /dev/null &"
     RETVAL=$?
 }
  
