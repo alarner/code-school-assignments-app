@@ -1,3 +1,3 @@
-# iron-profile
+# An assignments app to help with grading front-end development assignments
 
-a [Sails](http://sailsjs.org) application
+[Screencast of the app in use](https://vimeo.com/123043554)
