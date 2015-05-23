@@ -60,6 +60,7 @@
   "author": "alarner",
   "license": "",
   "devDependencies": {
+    "forever": "^0.14.1",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-concat-css": "^2.2.0",
