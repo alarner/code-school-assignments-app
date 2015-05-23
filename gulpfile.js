@@ -17,7 +17,7 @@ var serverRunning = false;
  * BUILD TASKS
  */
 
-gulp.task('build', ['js', 'concat-css', 'sass', 'css-sass', 'templates']);
+gulp.task('build', ['js', 'concat-css', 'sass', 'css-sass', 'templates', 'images', 'bower_components']);
 
 gulp.task('js', function() {
 	var scriptPaths = _.map(scripts, function(script) {
