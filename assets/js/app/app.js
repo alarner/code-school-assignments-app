@@ -34,6 +34,11 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		templateUrl: 'templates/student/assignment.html',
 		controller: 'StudentAssignmentCtrl'
 	})
+	.state('instructor-student-assignment', {
+		url: '/instructor/assignment/:id/:userId',
+		templateUrl: 'templates/instructor/student-assignment.html',
+		controller: 'InstructorStudentAssignmentCtrl'
+	})
 	.state('instructor-assignment', {
 		url: '/instructor/assignment/:id',
 		templateUrl: 'templates/instructor/assignment.html',
@@ -94,6 +99,11 @@ angular.module('app', ['app.controllers', 'app.data', 'app.filters', 'app.direct
 		requiresType: [1]
 	},
 	'instructor-assignment': {
+		visibleLoggedIn: true,
+		visibleLoggedOut: false,
+		requiresType: [2]
+	},
+	'instructor-student-assignment': {
 		visibleLoggedIn: true,
 		visibleLoggedOut: false,
 		requiresType: [2]

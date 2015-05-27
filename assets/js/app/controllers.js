@@ -311,6 +311,47 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 		$scope.assignment = assignments[0];
 	});
 }])
+.controller('InstructorStudentAssignmentCtrl', ['$scope', '$stateParams', '$http', 'User', 'Assignment', function($scope, $stateParams, $http, User, Assignment) {
+	$scope.error = {
+		generic: ''
+	};
+	$scope.assignment = false;
+	$scope.submissions = false;
+
+	if(!$stateParams.id) {
+		$scope.error.generic = 'Unknown assignment';
+	}
+	if(!$stateParams.userId) {
+		$scope.error.generic = 'Unknown assignment';
+	}
+
+	async.parallel( {
+		assignment: function(cb) {
+			$http.get('/assignment/'+$stateParams.id)
+			.success(function(assignment) {
+				cb(null, assignment);
+			})
+			.error(function(err) {
+				cb(err);
+			});
+		},
+		submissions: function(cb) {
+			$http.get('/submission/mine?sort=createdAt ASC&userId='+$stateParams.userId)
+			.success(function(submissions) {
+				cb(null, submissions);
+			})
+			.error(function(err) {
+				cb(err);
+			});
+		}
+	}, function(err, results) {
+		if(err) {
+			return $scope.error.generic = err;
+		}
+		var assignments = Assignment.createList([results.assignment], results.submissions);
+		$scope.assignment = assignments[0];
+	});
+}])
 .controller('InstructorAssignmentCtrl', ['$scope', '$stateParams', '$http', 'Assignment', function($scope, $stateParams, $http, Assignment) {
 	$scope.error = {
 		generic: ''
@@ -478,6 +519,7 @@ angular.module('app.controllers', ['app.services', 'ui.router', 'ngDialog'])
 	$scope.loaded = '';
 	$scope.assignments = [];
 	$scope.loading = true;
+	$scope.userId = $stateParams.id;
 
 	async.parallel( {
 		assignments: function(cb) {
